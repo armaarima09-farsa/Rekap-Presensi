@@ -162,11 +162,12 @@
                 <div class="field"><label>Sakit (Hari)</label><input type="number" id="sakit" name="sakit" value="0"></div>
                 <div class="field"><label>Izin (Hari)</label><input type="number" id="izin" name="izin" value="0"></div>
                 <div class="field"><label>Cuti (Hari)</label><input type="number" id="cuti" name="cuti" value="0"></div>
+                <div class="field full"><label>Lupa Absen</label><textarea id="lupa" name="lupa" rows="2"></textarea></div>
             </div>
         </div>
 
         <div class="card">
-            <div class="section-title">📊 RINCIAN KP (SIMTEG)</div>
+            <div class="section-title">📊 RINCIAN KP HK (SIMTEG)</div>
             <div class="form-grid">
                 <div class="field"><label>KP HK SD-SMP</label><input type="number" id="kp_sd" name="kp_sd" value="0"></div>
                 <div class="field"><label>KP HK 10-11</label><input type="number" id="kp_1011" name="kp_1011" value="0"></div>
@@ -176,14 +177,17 @@
                 <div class="field"><label>KP Top Camp</label><input type="number" id="kp_top" name="kp_top" value="0"></div>
                 <div class="field"><label>KP Pendamping</label><input type="number" id="kp_pend" name="kp_pend" value="0"></div>
                 <div class="field"><label>KP Lintas Bidang</label><input type="number" id="kp_lintas" name="kp_lintas" value="0"></div>
+                <div class="field"><label>KP Privat</label><input type="number" id="kp_privat" name="kp_privat" value="0"></div>
             </div>
         </div>
 
         <div class="card" style="border: 2px solid var(--accent);">
-            <div class="section-title">🌟 KP ONTIME & KREDIT POIN</div>
+            <div class="section-title">🌟 RINCIAN KP GHL / NHK (SIMTEG)</div>
             <div class="form-grid">
-                <div class="field full"><label>KP Ontime (Khusus GHL)</label><input type="number" id="kp_ontime" name="kp_ontime" value="0"></div>
-                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" id="kredit_poin" name="kredit_poin" value="0"></div>
+                <div class="field"><label>KP Ontime (Khusus GHL)</label><input type="number" id="kp_ontime" name="kp_ontime" value="0"></div>
+                <div class="field"><label>Kredit Poin (Khusus GHL)</label><input type="number" id="kredit_poin" name="kredit_poin" value="0"></div>
+                <div class="field"><label>Pelatihan Full Day</label><input type="number" id="pelatihan_full" name="pelatihan_full" value="0"></div>
+                <div class="field"><label>Pelatihan Half Day</label><input type="number" id="pelatihan_half" name="pelatihan_half" value="0"></div>
             </div>
         </div>
 
@@ -218,7 +222,7 @@
                         <option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option>
                     </select>
                 </div>
-                <div class="field full"><label>Lupa Absen</label><textarea id="lupa" name="lupa" rows="2"></textarea></div>
+                
             </div>
         </div>
 
@@ -227,7 +231,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoSdCFFFT8bCAtujEzFamNBIC-Tj99ncKGeGa55xXQ3uPs3u484ufAy9werkABfhfOgA/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwa6oXIO1ZwllBLs_wjTmG_VsXZ8XfOcvONKImu4lBnhRrxfC9-LaSVcfFw8yhwxv08/exec"; 
 
     const yr = document.getElementById('tahun');
     const now = new Date();
