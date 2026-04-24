@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rekap Presensi Premium – BP Galaxy-Kemang Pratama</title>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --accent: #ffab00;
+            --bg-body: #f4f7f9;
+            --bg-card: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --border: #dfe6e9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #303f9f 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 0 0 25px 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header h1 { font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        header p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+
+        .app-container { max-width: 900px; margin: 0 auto; padding: 0 15px; }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f1f2f6;
+            text-transform: uppercase;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        .field.full { grid-column: span 2; }
+
+        label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(26, 35, 126, 0.08);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:active { transform: scale(0.98); }
+
+        #notif {
+            display: none;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .field.full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Rekap Presensi Pegawai</h1>
+    <p>Bintang Pelajar Galaxy-Kemang Pratama</p>
+</header>
+
+<div class="app-container">
+    <div id="notif"></div>
+
+    <form id="rekapForm">
+        <div class="card">
+            <div class="section-title">👤 DATA DIRI & PERIODE</div>
+            <div class="form-grid">
+                <div class="field"><label>Nama Lengkap</label><input type="text" id="nama" name="nama" required></div>
+                <div class="field"><label>NID Guru</label><input type="text" id="nid" name="nid" required></div>
+                <div class="field">
+                    <label>Bulan Rekap</label>
+                    <select id="bulan" name="bulan" required>
+                        <option value="Januari">Januari</option><option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option><option value="April">April</option>
+                        <option value="Mei">Mei</option><option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option><option value="Agustus">Agustus</option>
+                        <option value="September">September</option><option value="Oktober">Oktober</option>
+                        <option value="November">November</option><option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="field"><label>Tahun</label><select id="tahun" name="tahun" required></select></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📅 KEHADIRAN</div>
+            <div class="form-grid">
+                <div class="field"><label>Hari Kerja (HK)</label><input type="number" id="hk" name="hk" value="0"></div>
+                <div class="field"><label>Sakit (Hari)</label><input type="number" id="sakit" name="sakit" value="0"></div>
+                <div class="field"><label>Izin (Hari)</label><input type="number" id="izin" name="izin" value="0"></div>
+                <div class="field"><label>Cuti (Hari)</label><input type="number" id="cuti" name="cuti" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📊 RINCIAN KP (SIMTEG)</div>
+            <div class="form-grid">
+                <div class="field"><label>KP HK SD-SMP</label><input type="number" id="kp_sd" name="kp_sd" value="0"></div>
+                <div class="field"><label>KP HK 10-11</label><input type="number" id="kp_1011" name="kp_1011" value="0"></div>
+                <div class="field"><label>KP HK 12</label><input type="number" id="kp_12" name="kp_12" value="0"></div>
+                <div class="field"><label>KP SBM/PTN</label><input type="number" id="kp_sbm" name="kp_sbm" value="0"></div>
+                <div class="field"><label>KP Prosus</label><input type="number" id="kp_prosus" name="kp_prosus" value="0"></div>
+                <div class="field"><label>KP Top Camp</label><input type="number" id="kp_top" name="kp_top" value="0"></div>
+                <div class="field"><label>KP Pendamping</label><input type="number" id="kp_pend" name="kp_pend" value="0"></div>
+                <div class="field"><label>KP Lintas Bidang</label><input type="number" id="kp_lintas" name="kp_lintas" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card" style="border: 2px solid var(--accent);">
+            <div class="section-title">🌟 KP ONTIME & KREDIT POIN</div>
+            <div class="form-grid">
+                <div class="field full"><label>KP Ontime (Khusus GHL)</label><input type="number" id="kp_ontime" name="kp_ontime" value="0"></div>
+                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" id="kredit_poin" name="kredit_poin" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">✅ INTENSITAS & PAES</div>
+            <div class="form-grid">
+                <div class="field"><label>BAKP & LPS</label>
+                    <select id="bakp" name="bakp">
+                        <option value="lengkap & tepat waktu">Lengkap & Tepat Waktu</option>
+                        <option value="tidak lengkap">Tidak Lengkap/Terlambat</option>
+                    </select>
+                </div>
+                <div class="field"><label>Kehadiran KP</label>
+                    <select id="hadir" name="hadir">
+                        <option value="selalu hadir">Selalu Hadir</option>
+                        <option value="kadang cancel">Kadang Cancel</option>
+                        <option value="sering cancel">Sering Cancel</option>
+                    </select>
+                </div>
+                <div class="field"><label>Komunikasi Ortu</label>
+                    <select id="ortu" name="ortu">
+                        <option value="sering">Sering</option><option value="jarang">Jarang</option>
+                    </select>
+                </div>
+                <div class="field"><label>FGBS / MGMP</label>
+                    <select id="fgbs" name="fgbs">
+                        <option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option>
+                    </select>
+                </div>
+                <div class="field full"><label>KIP / TGMPA</label>
+                    <select id="kip" name="kip">
+                        <option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option>
+                    </select>
+                </div>
+                <div class="field full"><label>Lupa Absen</label><textarea id="lupa" name="lupa" rows="2"></textarea></div>
+            </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="submit-btn">KIRIM REKAP KE GOOGLE SHEETS</button>
+    </form>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoSdCFFFT8bCAtujEzFamNBIC-Tj99ncKGeGa55xXQ3uPs3u484ufAy9werkABfhfOgA/exec"; 
+
+    const yr = document.getElementById('tahun');
+    const now = new Date();
+    for(let i=now.getFullYear(); i<=now.getFullYear()+1; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerHTML = i;
+        yr.appendChild(opt);
+    }
+    document.getElementById('bulan').selectedIndex = now.getMonth();
+
+    document.getElementById('rekapForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmit');
+        const notif = document.getElementById('notif');
+        btn.disabled = true; btn.innerText = "Sedang Mengirim...";
+
+        const formData = new FormData(this);
+        const params = new URLSearchParams(formData).toString();
+
+        fetch(`${SCRIPT_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
+        .then(() => {
+            notif.style.display = "block";
+            notif.style.background = "#d1f2eb";
+            notif.style.color = "#0e6655";
+            notif.innerText = "✓ Berhasil Terkirim! Data sedang diproses oleh Google Sheets.";
+            document.getElementById('rekapForm').reset();
+            window.scrollTo(0,0);
+        })
+        .catch(() => alert("Error saat mengirim data."))
+        .finally(() => { btn.disabled = false; btn.innerText = "KIRIM REKAP KE GOOGLE SHEETS"; });
+    });
+</script>
+</body>
+</html>
