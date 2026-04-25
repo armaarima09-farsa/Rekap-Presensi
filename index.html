@@ -136,7 +136,7 @@
 
     <form id="rekapForm">
         <div class="card">
-            <div class="section-title">👤 DATA DIRI & PERIODE</div>
+            <div class="section-title">👤 DATA DIRI & PERIODE REKAP</div>
             <div class="form-grid">
                 <div class="field"><label>Nama Lengkap</label><input type="text" id="nama" name="nama" required></div>
                 <div class="field"><label>NID Guru</label><input type="text" id="nid" name="nid" required></div>
@@ -156,7 +156,7 @@
         </div>
 
         <div class="card">
-            <div class="section-title">📅 KEHADIRAN</div>
+            <div class="section-title">📅 DATA KEHADIRAN</div>
             <div class="form-grid">
                 <div class="field"><label>Hari Kerja (HK)</label><input type="number" id="hk" name="hk" value="0"></div>
                 <div class="field"><label>Sakit (Hari)</label><input type="number" id="sakit" name="sakit" value="0"></div>
@@ -192,7 +192,7 @@
         </div>
 
         <div class="card">
-            <div class="section-title">✅ INTENSITAS & PAES</div>
+            <div class="section-title">✅ PAES & PEMBINAAN</div>
             <div class="form-grid">
                 <div class="field"><label>BAKP & LPS</label>
                     <select id="bakp" name="bakp">
@@ -226,7 +226,7 @@
             </div>
         </div>
 
-        <button type="submit" id="btnSubmit" class="submit-btn">KIRIM REKAP KE GOOGLE SHEETS</button>
+        <button type="submit" id="btnSubmit" class="submit-btn">SIMPAN DATA</button>
     </form>
 </div>
 
@@ -244,6 +244,9 @@
 
     document.getElementById('rekapForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        const isConfirmed = confirm("Apakah Data yang Diisi Sudah Lengkap & Benar?");
+        if (!isConfirmed) return;
         const btn = document.getElementById('btnSubmit');
         const notif = document.getElementById('notif');
         btn.disabled = true; btn.innerText = "Sedang Mengirim...";
@@ -261,7 +264,7 @@
             window.scrollTo(0,0);
         })
         .catch(() => alert("Error saat mengirim data."))
-        .finally(() => { btn.disabled = false; btn.innerText = "KIRIM REKAP KE GOOGLE SHEETS"; });
+        .finally(() => { btn.disabled = false; btn.innerText = "SIMPAN DATA"; });
     });
 </script>
 </body>
