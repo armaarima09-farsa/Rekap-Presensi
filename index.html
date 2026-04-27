@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -33,7 +32,6 @@
 <div class="app-container">
     <div id="notif"></div>
     <form id="rekapForm">
-        <!-- DATA DIRI -->
         <div class="card">
             <div class="section-title">👤 DATA DIRI & PERIODE REKAP</div>
             <div class="form-grid">
@@ -53,50 +51,45 @@
             </div>
         </div>
 
-        <!-- KEHADIRAN -->
         <div class="card">
             <div class="section-title">📅 DATA KEHADIRAN</div>
             <div class="form-grid">
-                <div class="field"><label>Hari Kerja (HK)</label><input type="number" name="hk" value="0"></div>
-                <div class="field"><label>Sakit (Hari)</label><input type="number" name="sakit" value="0"></div>
-                <div class="field"><label>Izin (Hari)</label><input type="number" name="izin" value="0"></div>
-                <div class="field"><label>Cuti (Hari)</label><input type="number" name="cuti" value="0"></div>
+                <div class="field"><label>Hari Kerja (HK)</label><input type="number" step="any" name="hk" value="0"></div>
+                <div class="field"><label>Sakit (Hari)</label><input type="number" step="any" name="sakit" value="0"></div>
+                <div class="field"><label>Izin (Hari)</label><input type="number" step="any" name="izin" value="0"></div>
+                <div class="field"><label>Cuti (Hari)</label><input type="number" step="any" name="cuti" value="0"></div>
                 <div class="field full"><label>Lupa Absen</label><textarea name="lupa" rows="2" placeholder="Sebutkan tanggalnya"></textarea></div>
             </div>
         </div>
 
-        <!-- KP HK -->
         <div class="card">
             <div class="section-title">📊 RINCIAN KP HK (SIMTEG)</div>
             <div class="form-grid">
-                <div class="field"><label>KP HK SD-SMP</label><input type="number" name="kp_sd" value="0"></div>
-                <div class="field"><label>KP HK 10-11</label><input type="number" name="kp_1011" value="0"></div>
-                <div class="field"><label>KP HK 12</label><input type="number" name="kp_12" value="0"></div>
-                <div class="field"><label>KP SI UTBK</label><input type="number" name="kp_si_utbk" value="0"></div>
-                <div class="field"><label>KP Prosus</label><input type="number" name="kp_prosus" value="0"></div>
-                <div class="field"><label>KP Top Camp</label><input type="number" name="kp_top" value="0"></div>
-                <div class="field"><label>KP Pendamping</label><input type="number" name="kp_pend" value="0"></div>
-                <div class="field"><label>KP Lintas Bidang</label><input type="number" name="kp_lintas" value="0"></div>
-                <div class="field full"><label>KP Privat</label><input type="number" name="kp_privat" value="0"></div>
+                <div class="field"><label>KP HK SD-SMP</label><input type="number" step="any" name="kp_sd" value="0"></div>
+                <div class="field"><label>KP HK 10-11</label><input type="number" step="any" name="kp_1011" value="0"></div>
+                <div class="field"><label>KP HK 12</label><input type="number" step="any" name="kp_12" value="0"></div>
+                <div class="field"><label>KP SI UTBK</label><input type="number" step="any" name="kp_si_utbk" value="0"></div>
+                <div class="field"><label>KP Prosus</label><input type="number" step="any" name="kp_prosus" value="0"></div>
+                <div class="field"><label>KP Top Camp</label><input type="number" step="any" name="kp_top" value="0"></div>
+                <div class="field"><label>KP Pendamping</label><input type="number" step="any" name="kp_pend" value="0"></div>
+                <div class="field"><label>KP Lintas Bidang</label><input type="number" step="any" name="kp_lintas" value="0"></div>
+                <div class="field full"><label>KP Privat</label><input type="number" step="any" name="kp_privat" value="0"></div>
             </div>
         </div>
 
-        <!-- KP GHL / NHK -->
         <div class="card">
             <div class="section-title">🌟 RINCIAN KP GHL / NHK (SIMTEG)</div>
             <div class="form-grid">
-
-                <div class="field"><label>KP NHK SD-SMP</label><input type="number" name="kp_nhk_sd" value="0"></div>
-                <div class="field"><label>KP NHK 10-11</label><input type="number" name="kp_nhk_1011" value="0"></div>
-                <div class="field"><label>KP NHK 12</label><input type="number" name="kp_nhk_12" value="0"></div>
-                <div class="field"><label>KP Ontime (Khusus GHL)</label><input type="number" name="kp_ontime" value="0"></div>
-                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" name="kredit_poin" value="0"></div>
-                <div class="field"><label>Pelatihan Full Day</label><input type="number" name="pelatihan_full" value="0"></div>
-                <div class="field"><label>Pelatihan Half Day</label><input type="number" name="pelatihan_half" value="0"></div>
+                <div class="field"><label>KP NHK SD-SMP</label><input type="number" step="any" name="kp_nhk_sd" value="0"></div>
+                <div class="field"><label>KP NHK 10-11</label><input type="number" step="any" name="kp_nhk_1011" value="0"></div>
+                <div class="field"><label>KP NHK 12</label><input type="number" step="any" name="kp_nhk_12" value="0"></div>
+                <div class="field"><label>KP Ontime (Khusus GHL)</label><input type="number" step="any" name="kp_ontime" value="0"></div>
+                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" step="any" name="kredit_poin" value="0"></div>
+                <div class="field"><label>Pelatihan Full Day</label><input type="number" step="any" name="pelatihan_full" value="0"></div>
+                <div class="field"><label>Pelatihan Half Day</label><input type="number" step="any" name="pelatihan_half" value="0"></div>
             </div>
         </div>
 
-        <!-- PAES -->
         <div class="card">
             <div class="section-title">✅ PAES & PEMBINAAN</div>
             <div class="form-grid">
