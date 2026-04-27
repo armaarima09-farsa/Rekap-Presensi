@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -32,6 +33,7 @@
 <div class="app-container">
     <div id="notif"></div>
     <form id="rekapForm">
+        <!-- DATA DIRI -->
         <div class="card">
             <div class="section-title">👤 DATA DIRI & PERIODE REKAP</div>
             <div class="form-grid">
@@ -51,6 +53,7 @@
             </div>
         </div>
 
+        <!-- KEHADIRAN -->
         <div class="card">
             <div class="section-title">📅 DATA KEHADIRAN</div>
             <div class="form-grid">
@@ -58,10 +61,11 @@
                 <div class="field"><label>Sakit (Hari)</label><input type="number" name="sakit" value="0"></div>
                 <div class="field"><label>Izin (Hari)</label><input type="number" name="izin" value="0"></div>
                 <div class="field"><label>Cuti (Hari)</label><input type="number" name="cuti" value="0"></div>
-                <div class="field full"><label>Lupa Absen</label><textarea name="lupa" rows="2" placeholder="Sebutkan tanggal dan alasan..."></textarea></div>
+                <div class="field full"><label>Lupa Absen</label><textarea name="lupa" rows="2" placeholder="Sebutkan tanggalnya"></textarea></div>
             </div>
         </div>
 
+        <!-- KP HK -->
         <div class="card">
             <div class="section-title">📊 RINCIAN KP HK (SIMTEG)</div>
             <div class="form-grid">
@@ -77,6 +81,7 @@
             </div>
         </div>
 
+        <!-- KP GHL / NHK -->
         <div class="card">
             <div class="section-title">🌟 RINCIAN KP GHL / NHK (SIMTEG)</div>
             <div class="form-grid">
@@ -90,6 +95,7 @@
             </div>
         </div>
 
+        <!-- PAES -->
         <div class="card">
             <div class="section-title">✅ PAES & PEMBINAAN</div>
             <div class="form-grid">
@@ -130,7 +136,6 @@
 </div>
 
 <script>
-    // MASUKKAN URL APPS SCRIPT ANDA DI BAWAH INI
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJvg2G8yuS2XMjgW8hOwb67awYPfoWwnPOAsjqflIIJv5Vqna8PDwnsBbn-uMSDvk2aw/exec"; 
 
     const yr = document.getElementById('tahun');
