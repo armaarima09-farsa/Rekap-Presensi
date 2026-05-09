@@ -18,6 +18,8 @@
         label { font-size: 11px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
         input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
         .submit-btn { background: var(--primary); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .download-btn { background: #1e7e34; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-btn:hover { background: #155724; }
         #notif { display: none; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: bold; }
         @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: span 1; } }
     </style>
@@ -126,11 +128,16 @@
         </div>
 
         <button type="submit" id="btnSubmit" class="submit-btn">SIMPAN DATA</button>
+        <button type="button" id="btnDownload" class="download-btn" onclick="downloadExcel()">⬇️ UNDUH DATA SEBAGAI FILE EXCEL (.xlsx)</button>
     </form>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3W56vDYhD7Rn5JIl2ohG9nMbPtWGub5OZE0tpcDigCm1PC8HATyBCBomQIAl9gbeu5Q/exec"; 
+
+    // Simpan data terakhir yang berhasil disubmit
+    let lastSubmittedData = null;
 
     const yr = document.getElementById('tahun');
     const now = new Date();
@@ -150,6 +157,9 @@
         btn.disabled = true; btn.innerText = "Sedang Menyimpan...";
 
         const formData = new FormData(this);
+        // Simpan data form sebelum reset
+        lastSubmittedData = Object.fromEntries(formData.entries());
+
         const params = new URLSearchParams(formData).toString();
 
         fetch(`${SCRIPT_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
@@ -157,13 +167,90 @@
             notif.style.display = "block";
             notif.style.background = "#d1f2eb";
             notif.style.color = "#0e6655";
-            notif.innerText = "✓ Berhasil Disimpan ke Google Sheets!";
+            notif.innerText = "✓ Berhasil Disimpan ke Google Sheets! Klik tombol hijau di bawah untuk mengunduh file Excel.";
+            // Tampilkan tombol download
+            document.getElementById('btnDownload').style.display = 'block';
             this.reset();
             window.scrollTo(0,0);
+            // Scroll ke tombol download
+            setTimeout(() => document.getElementById('btnDownload').scrollIntoView({behavior:'smooth', block:'center'}), 400);
         })
         .catch(() => alert("Terjadi kesalahan koneksi."))
         .finally(() => { btn.disabled = false; btn.innerText = "SIMPAN DATA"; });
     });
+
+    function downloadExcel() {
+        if (!lastSubmittedData) { alert("Tidak ada data untuk diunduh."); return; }
+
+        const d = lastSubmittedData;
+        const nama = d.nama || '-';
+        const bulan = d.bulan || '-';
+        const tahun = d.tahun || '-';
+
+        // Susun baris data untuk Excel
+        const rows = [
+            ["REKAP PRESENSI PEGAWAI"],
+            ["Bintang Pelajar Galaxy-Kemang Pratama"],
+            [],
+            ["DATA DIRI & PERIODE REKAP"],
+            ["Nama Lengkap", nama],
+            ["NID Pegawai", d.nid || '-'],
+            ["Bulan Rekap", bulan],
+            ["Tahun", tahun],
+            [],
+            ["DATA KEHADIRAN"],
+            ["Hari Kerja (HK)", d.hk || 0],
+            ["Sakit (Hari)", d.sakit || 0],
+            ["Izin (Hari)", d.izin || 0],
+            ["Cuti (Hari)", d.cuti || 0],
+            ["Lupa Absen", d.lupa || '-'],
+            [],
+            ["RINCIAN KP HK (SIMTEG)"],
+            ["KP HK SD-SMP", d.kp_sd || 0],
+            ["KP HK 10-11", d.kp_1011 || 0],
+            ["KP HK 12", d.kp_12 || 0],
+            ["KP SI UTBK", d.kp_si_utbk || 0],
+            ["KP Prosus", d.kp_prosus || 0],
+            ["KP Top Camp", d.kp_top || 0],
+            ["KP Pendamping", d.kp_pend || 0],
+            ["KP Lintas Bidang", d.kp_lintas || 0],
+            ["KP Privat", d.kp_privat || 0],
+            [],
+            ["RINCIAN KP GHL / NHK (SIMTEG)"],
+            ["KP NHK SD-SMP", d.kp_nhk_sd || 0],
+            ["KP NHK 10-11", d.kp_nhk_1011 || 0],
+            ["KP NHK 12", d.kp_nhk_12 || 0],
+            ["KP Ontime (Khusus GHL)", d.kp_ontime || 0],
+            ["Kredit Poin (Khusus GHL)", d.kredit_poin || 0],
+            ["Pelatihan Full Day", d.pelatihan_full || 0],
+            ["Pelatihan Half Day", d.pelatihan_half || 0],
+            [],
+            ["PAES & PEMBINAAN"],
+            ["Pengisian BAKP", d.bakp || '-'],
+            ["Pengiriman LPS", d.lps || '-'],
+            ["Kehadiran KP", d.hadir || '-'],
+            ["Komunikasi Ortu", d.ortu || '-'],
+            ["FGBS / MGMP", d.fgbs || '-'],
+            ["KIP / TGMPA", d.kip || '-'],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+
+        // Atur lebar kolom
+        ws['!cols'] = [{ wch: 35 }, { wch: 30 }];
+
+        // Style judul
+        const bold = { font: { bold: true } };
+        ['A1','A2','A4','A10','A17','A27','A35'].forEach(cell => {
+            if (ws[cell]) ws[cell].s = bold;
+        });
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap Presensi");
+
+        const fileName = `Rekap_Presensi_${nama.replace(/\s+/g,'_')}_${bulan}_${tahun}.xlsx`;
+        XLSX.writeFile(wb, fileName);
+    }
 </script>
 </body>
 </html>
