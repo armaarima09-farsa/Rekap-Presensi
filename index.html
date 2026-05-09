@@ -3,277 +3,825 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BP Portal – Galaxy & Kemang Pratama</title>
+    <title>Portal Pegawai – BP Galaxy-Kemang Pratama</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { 
-            --primary: #1a237e; 
-            --accent: #ffab00; 
-            --bg-body: #f4f7f9; 
-            --bg-card: #ffffff; 
-            --text-main: #2d3436; 
-            --text-muted: #636e72; 
-            --border: #dfe6e9; 
-            --secondary: #303f9f;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-        }
+        /* CSS Portal Utama */
+        :root { --primary: #1a237e; --bg-body: #f4f7f9; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-body); color: var(--text-main); padding-bottom: 50px; }
+        body { font-family: sans-serif; background-color: var(--bg-body); }
         
-        header { 
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); 
-            color: white; padding: 25px 20px; border-radius: 0 0 25px 25px; 
-            text-align: center; margin-bottom: 0; display: flex; align-items: center; 
-            justify-content: center; gap: 20px; flex-wrap: wrap; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .portal-nav { 
+            display: flex; 
+            background: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            justify-content: center; 
+            padding: 10px;
         }
-        header img { height: 60px; border-radius: 8px; background: white; padding: 5px; }
-        header .header-text { text-align: left; }
-        header h2 { font-size: 22px; margin: 0; }
-        header p { font-size: 13px; opacity: 0.9; margin: 0; }
-
-        /* Navigation Tab System */
-        .tabs-nav {
-            display: flex;
-            max-width: 800px;
-            margin: -20px auto 20px;
-            background: white;
-            padding: 6px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            position: relative;
-            z-index: 10;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: none;
-            font-weight: bold;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
+        .nav-btn { 
+            padding: 12px 20px; 
+            border: none; 
+            background: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            color: #636e72; 
+            border-bottom: 3px solid transparent; 
+            margin: 0 10px;
             font-size: 14px;
         }
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
+        .nav-btn.active { 
+            color: var(--primary); 
+            border-bottom: 3px solid var(--primary); 
         }
 
-        .app-container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
         .tab-panel { display: none; }
-        .tab-panel.active { display: block; animation: slideUp 0.4s ease; }
+        .tab-panel.active { display: block; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card { background: var(--bg-card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        .section-title { font-size: 13px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid #f1f2f6; padding-bottom: 5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        /* Gabungan CSS dari kedua file agar tampilan tetap sama */
         
+        :root { --primary: #1a237e; --accent: #ffab00; --bg-body: #f4f7f9; --bg-card: #ffffff; --text-main: #2d3436; --text-muted: #636e72; --border: #dfe6e9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background-color: var(--bg-body); color: var(--text-main); padding-bottom: 50px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, #303f9f 100%); color: white; padding: 20px 20px; border-radius: 0 0 25px 25px; text-align: center; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+        header img { height: 70px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
+        header .header-text { text-align: left; }
+        header .header-text h2 { font-size: 20px; margin: 0 0 4px; }
+        header .header-text p  { font-size: 13px; margin: 0; opacity: 0.88; }
+        @media (max-width: 500px) { header { flex-direction: column; } header .header-text { text-align: center; } }
+        .app-container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid #f1f2f6; padding-bottom: 5px; text-transform: uppercase; }
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .field { display: flex; flex-direction: column; gap: 5px; }
         .field.full { grid-column: span 2; }
-        label { font-size: 10px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: 0.2s; }
-        input:focus { border-color: var(--primary); outline: none; }
-        
-        .btn-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .btn { padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: center; font-size: 15px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: #1e7e34; color: white; display: none; }
-        .btn-danger { background: #b71c1c; color: white; display: none; }
-        
-        #toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 25px; border-radius: 30px; font-size: 14px; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: span 1; } }
-
-        /* Print Styles */
-        #pdfOutput { display: none; }
+        label { font-size: 11px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+        .submit-btn { background: var(--primary); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .download-btn { background: #1e7e34; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-btn:hover { background: #155724; }
+        .download-pdf-btn { background: #b71c1c; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-pdf-btn:hover { background: #7f0000; }
+        #pdfTemplate { display: none; }
         @media print {
-            body > *:not(#pdfOutput) { display: none !important; }
-            #pdfOutput { display: block !important; }
-            @page { size: A4; margin: 15mm; }
+            body > *:not(#pdfTemplate) { display: none !important; }
+            #pdfTemplate { display: block !important; }
+            @page { size: A4; margin: 14mm; }
         }
-        .pdf-page { font-family: Arial, sans-serif; color: #1a1a1a; }
-        .pdf-head { background: #1a237e; color: white; padding: 20px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; }
-        .pdf-body { border: 1px solid #c5cae9; border-top: none; padding: 0; border-radius: 0 0 8px 8px; overflow: hidden; }
-        .pdf-sect { background: #f5f5f5; padding: 6px 15px; font-size: 10px; font-weight: bold; border-top: 1px solid #c5cae9; border-bottom: 1px solid #c5cae9; text-transform: uppercase; color: #1a237e; }
-        .pdf-row { display: flex; justify-content: space-between; padding: 8px 15px; border-bottom: 1px solid #eee; font-size: 11px; }
+        #pdfTemplate { font-family: Arial, sans-serif; font-size: 11px; color: #1a1a1a; }
+        .pdf-header { background: linear-gradient(135deg, #1a237e 0%, #303f9f 100%); color: white; padding: 18px 22px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: flex-start; }
+        .pdf-header-left h1 { font-size: 17px; margin: 0 0 3px; }
+        .pdf-header-left p  { font-size: 10px; margin: 0; opacity: 0.85; }
+        .pdf-header-left .pdf-meta { margin-top: 8px; font-size: 9px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 6px; }
+        .pdf-header-right { font-size: 9px; opacity: 0.7; text-align: right; }
+        .pdf-body { border: 1px solid #c5cae9; border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
+        .pdf-sec-title { font-weight: bold; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.7px; padding: 6px 12px; border-bottom: 1px solid #c5cae9; border-top: 1px solid #c5cae9; }
+        .pdf-sec-title.blue   { background: #e8eaf6; color: #1a237e; border-color: #c5cae9; }
+        .pdf-sec-title.green  { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+        .pdf-sec-title.purple { background: #f3e5f5; color: #4a148c; border-color: #ce93d8; }
+        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .pdf-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 12px; border-bottom: 1px solid #eeeeee; }
         .pdf-row.alt { background: #fafafa; }
-        .pdf-foot { margin-top: 20px; display: flex; justify-content: space-between; font-size: 10px; }
-        .pdf-sig { text-align: center; width: 150px; }
-        .pdf-sig-space { height: 40px; }
-        .pdf-sig-line { border-top: 1px solid #555; padding-top: 5px; font-weight: bold; }
+        .pdf-row.full { grid-column: span 2; border-left: none; }
+        .pdf-row .lbl { color: #555; font-size: 9.5px; }
+        .pdf-row .val { font-weight: bold; color: #1a237e; font-size: 10px; text-align: right; }
+        .pdf-divider { border: none; border-top: 1px solid #c5cae9; margin: 0; }
+        .pdf-footer { margin-top: 14px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 9px; color: #999; }
+        .pdf-ttd { text-align: center; min-width: 130px; }
+        .pdf-ttd-space { height: 38px; }
+        .pdf-ttd-name { font-weight: bold; color: #333; font-size: 10px; border-top: 1px solid #aaa; padding-top: 4px; }
+        #notif { display: none; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: bold; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: span 1; } }
+    
+        
+        :root { --primary: #1a237e; --accent: #ffab00; --bg-body: #f4f7f9; --bg-card: #ffffff; --text-main: #2d3436; --text-muted: #636e72; --border: #dfe6e9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background-color: var(--bg-body); color: var(--text-main); padding-bottom: 50px; }
+        header { background: linear-gradient(135deg, var(--primary) 0%, #303f9f 100%); color: white; padding: 20px 20px; border-radius: 0 0 25px 25px; text-align: center; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+        header img { height: 70px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
+        header .header-text { text-align: left; }
+        header .header-text h2 { font-size: 20px; margin: 0 0 4px; }
+        header .header-text p  { font-size: 13px; margin: 0; opacity: 0.88; }
+        @media (max-width: 500px) { header { flex-direction: column; } header .header-text { text-align: center; } }
+        .app-container { max-width: 800px; margin: 0 auto; padding: 0 15px; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid #f1f2f6; padding-bottom: 5px; text-transform: uppercase; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field.full { grid-column: span 2; }
+        label { font-size: 11px; font-weight: bold; color: var(--text-muted); text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+        .submit-btn { background: var(--primary); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .download-btn { background: #1e7e34; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-btn:hover { background: #155724; }
+        .download-pdf-btn { background: #b71c1c; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-pdf-btn:hover { background: #7f0000; }
+        #pdfTemplate { display: none; }
+        @media print {
+            body > *:not(#pdfTemplate) { display: none !important; }
+            #pdfTemplate { display: block !important; }
+            @page { size: A4; margin: 14mm; }
+        }
+        #pdfTemplate { font-family: Arial, sans-serif; font-size: 11px; color: #1a1a1a; }
+        .pdf-header { background: linear-gradient(135deg, #1a237e 0%, #303f9f 100%); color: white; padding: 18px 22px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: flex-start; }
+        .pdf-header-left h1 { font-size: 17px; margin: 0 0 3px; }
+        .pdf-header-left p  { font-size: 10px; margin: 0; opacity: 0.85; }
+        .pdf-header-left .pdf-meta { margin-top: 8px; font-size: 9px; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 6px; }
+        .pdf-header-right { font-size: 9px; opacity: 0.7; text-align: right; }
+        .pdf-body { border: 1px solid #c5cae9; border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
+        .pdf-sec-title { font-weight: bold; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.7px; padding: 6px 12px; border-bottom: 1px solid #c5cae9; border-top: 1px solid #c5cae9; }
+        .pdf-sec-title.blue   { background: #e8eaf6; color: #1a237e; border-color: #c5cae9; }
+        .pdf-sec-title.green  { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+        .pdf-sec-title.purple { background: #f3e5f5; color: #4a148c; border-color: #ce93d8; }
+        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .pdf-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 12px; border-bottom: 1px solid #eeeeee; }
+        .pdf-row.alt { background: #fafafa; }
+        .pdf-row.full { grid-column: span 2; border-left: none; }
+        .pdf-row .lbl { color: #555; font-size: 9.5px; }
+        .pdf-row .val { font-weight: bold; color: #1a237e; font-size: 10px; text-align: right; }
+        .pdf-divider { border: none; border-top: 1px solid #c5cae9; margin: 0; }
+        .pdf-footer { margin-top: 14px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 9px; color: #999; }
+        .pdf-ttd { text-align: center; min-width: 130px; }
+        .pdf-ttd-space { height: 38px; }
+        .pdf-ttd-name { font-weight: bold; color: #333; font-size: 10px; border-top: 1px solid #aaa; padding-top: 4px; }
+        #notif { display: none; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: bold; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: span 1; } }
+    
+        
+        /* Perbaikan agar header tidak bertumpuk */
+        header { margin-top: 0 !important; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-text">
-            <h2>Portal BP Galaxy-KP</h2>
-            <p>Sistem Terintegrasi Presensi & Administrasi</p>
-        </div>
-    </header>
+<div class="portal-nav">
+    <button id="btn-presensi" class="nav-btn active" onclick="gantiTab('presensi')">REKAP PRESENSI</button>
+    <button id="btn-spl" class="nav-btn" onclick="gantiTab('spl')">REKAP SPL</button>
+</div>
 
-    <nav class="tabs-nav">
-        <button class="tab-btn active" onclick="openTab(event, 'presensi_tab')">Rekap Presensi</button>
-        <button class="tab-btn" onclick="openTab(event, 'spl_tab')">Input SPL</button>
-    </nav>
+<div id="panel-presensi" class="tab-panel active">
+    
 
-    <div class="app-container">
-        
-        <!-- PANEL PRESENSI -->
-        <div id="presensi_tab" class="tab-panel active">
-            <div class="card">
-                <div class="section-title">👤 Identitas Pengajar</div>
-                <div class="form-grid">
-                    <div class="field"><label>Nama Pengajar</label><input type="text" id="p_nama"></div>
-                    <div class="field"><label>Unit Kerja</label>
-                        <select id="p_unit">
-                            <option value="Galaxy">Galaxy</option>
-                            <option value="Kemang Pratama">Kemang Pratama</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Bulan</label>
-                        <select id="p_bulan">
-                            <option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option>
-                            <option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option>
-                            <option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option>
-                            <option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option>
-                        </select>
-                    </div>
-                    <div class="field"><label>Tahun</label><input type="number" id="p_tahun" value="2025"></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="section-title">📈 Data Kehadiran</div>
-                <div class="form-grid">
-                    <div class="field"><label>Hadir (Hari)</label><input type="number" id="p_hadir" value="0"></div>
-                    <div class="field"><label>Terlambat (Menit)</label><input type="number" id="p_lambat" value="0"></div>
-                </div>
-            </div>
-            <div class="btn-stack">
-                <button class="btn btn-primary" onclick="genPresensi()">Generate Data Presensi</button>
-                <button class="btn btn-success" id="p_xl">Simpan ke Excel</button>
-                <button class="btn btn-danger" id="p_pdf" onclick="window.print()">Cetak PDF</button>
-            </div>
-        </div>
-
-        <!-- PANEL SPL -->
-        <div id="spl_tab" class="tab-panel">
-            <div class="card">
-                <div class="section-title">📑 Formulir Lembur</div>
-                <div class="form-grid">
-                    <div class="field"><label>Nama Karyawan</label><input type="text" id="s_nama"></div>
-                    <div class="field"><label>Jabatan</label><input type="text" id="s_jabatan"></div>
-                    <div class="field"><label>Tanggal Lembur</label><input type="date" id="s_tgl"></div>
-                    <div class="field"><label>Durasi (Jam)</label><input type="number" id="s_jam" value="0"></div>
-                    <div class="field full"><label>Tugas/Pekerjaan</label><textarea id="s_ket" rows="2"></textarea></div>
-                </div>
-            </div>
-            <div class="btn-stack">
-                <button class="btn btn-primary" onclick="genSPL()">Generate Surat Lembur</button>
-                <button class="btn btn-success" id="s_xl">Simpan SPL</button>
-                <button class="btn btn-danger" id="s_pdf" onclick="window.print()">Cetak SPL (PDF)</button>
-            </div>
-        </div>
-
+<header>
+    <img id="headerLogo" src="" alt="Logo Bintang Pelajar">
+    <div class="header-text">
+        <h2>Rekap Presensi Pegawai</h2>
+        <p>Bintang Pelajar Galaxy-Kemang Pratama</p>
     </div>
+</header>
 
-    <div id="toast">Data berhasil diproses</div>
-    <div id="pdfOutput"></div>
+<div class="app-container">
+    <div id="notif"></div>
+    <form id="rekapForm">
+        <div class="card">
+            <div class="section-title">👤 DATA DIRI & PERIODE REKAP</div>
+            <div class="form-grid">
+                <div class="field"><label>Nama Lengkap</label><input type="text" name="nama" required></div>
+                <div class="field"><label>NID PEGAWAI</label><input type="text" name="nid" required></div>
+                <div class="field"><label>Bulan Rekap</label>
+                    <select id="bulan" name="bulan">
+                        <option value="Januari">Januari</option><option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option><option value="April">April</option>
+                        <option value="Mei">Mei</option><option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option><option value="Agustus">Agustus</option>
+                        <option value="September">September</option><option value="Oktober">Oktober</option>
+                        <option value="November">November</option><option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="field"><label>Tahun</label><select id="tahun" name="tahun"></select></div>
+            </div>
+        </div>
 
-    <script>
-        function openTab(evt, tabId) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-panel");
-            for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
-            document.getElementById(tabId).style.display = "block";
-            evt.currentTarget.className += " active";
+        <div class="card">
+            <div class="section-title">📅 DATA KEHADIRAN</div>
+            <div class="form-grid">
+                <div class="field"><label>Hari Kerja (HK)</label><input type="number" step="any" name="hk" value="0"></div>
+                <div class="field"><label>Sakit (Hari)</label><input type="number" step="any" name="sakit" value="0"></div>
+                <div class="field"><label>Izin (Hari)</label><input type="number" step="any" name="izin" value="0"></div>
+                <div class="field"><label>Cuti (Hari)</label><input type="number" step="any" name="cuti" value="0"></div>
+                <div class="field full"><label>Lupa Absen</label><textarea name="lupa" rows="2" placeholder="Sebutkan tanggalnya"></textarea></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📊 RINCIAN KP HK (SIMTEG)</div>
+            <div class="form-grid">
+                <div class="field"><label>KP HK SD-SMP</label><input type="number" step="any" name="kp_sd" value="0"></div>
+                <div class="field"><label>KP HK 10-11</label><input type="number" step="any" name="kp_1011" value="0"></div>
+                <div class="field"><label>KP HK 12</label><input type="number" step="any" name="kp_12" value="0"></div>
+                <div class="field"><label>KP SI UTBK</label><input type="number" step="any" name="kp_si_utbk" value="0"></div>
+                <div class="field"><label>KP Prosus</label><input type="number" step="any" name="kp_prosus" value="0"></div>
+                <div class="field"><label>KP Top Camp</label><input type="number" step="any" name="kp_top" value="0"></div>
+                <div class="field"><label>KP Pendamping</label><input type="number" step="any" name="kp_pend" value="0"></div>
+                <div class="field"><label>KP Lintas Bidang</label><input type="number" step="any" name="kp_lintas" value="0"></div>
+                <div class="field full"><label>KP Privat</label><input type="number" step="any" name="kp_privat" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🌟 RINCIAN KP GHL / NHK (SIMTEG)</div>
+            <div class="form-grid">
+                <div class="field"><label>KP NHK SD-SMP</label><input type="number" step="any" name="kp_nhk_sd" value="0"></div>
+                <div class="field"><label>KP NHK 10-11</label><input type="number" step="any" name="kp_nhk_1011" value="0"></div>
+                <div class="field"><label>KP NHK 12</label><input type="number" step="any" name="kp_nhk_12" value="0"></div>
+                <div class="field"><label>KP Ontime (Khusus GHL)</label><input type="number" step="any" name="kp_ontime" value="0"></div>
+                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" step="any" name="kredit_poin" value="0"></div>
+                <div class="field"><label>Pelatihan Full Day</label><input type="number" step="any" name="pelatihan_full" value="0"></div>
+                <div class="field"><label>Pelatihan Half Day</label><input type="number" step="any" name="pelatihan_half" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">✅ PAES & PEMBINAAN</div>
+            <div class="form-grid">
+                <div class="field"><label>PENGISIAN BAKP</label>
+                    <select name="bakp">
+                        <option value="lengkap & tepat waktu">Lengkap & Tepat Waktu</option>
+                        <option value="tidak lengkap">Tidak Lengkap/Terlambat</option>
+                    </select>
+                </div>
+                <div class="field"><label>PENGIRIMAN LPS</label>
+                    <select name="lps">
+                        <option value="Sudah 100%">Sudah 100%</option>
+                        <option value="Belum 100%">Belum 100%</option>
+                        <option value="Belum sama sekali">Belum sama sekali</option>
+                    </select>
+                </div>
+                <div class="field"><label>Kehadiran KP</label>
+                    <select name="hadir">
+                        <option value="selalu hadir">Selalu Hadir</option>
+                        <option value="kadang cancel">Kadang Cancel</option>
+                        <option value="sering cancel">Sering Cancel</option>
+                    </select>
+                </div>
+                <div class="field"><label>Komunikasi Ortu</label>
+                    <select name="ortu"><option value="sering">Sering</option><option value="jarang">Jarang</option></select>
+                </div>
+                <div class="field"><label>FGBS / MGMP</label>
+                    <select name="fgbs"><option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option></select>
+                </div>
+                <div class="field"><label>KIP / TGMPA</label>
+                    <select name="kip"><option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option></select>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="submit-btn">SIMPAN DATA</button>
+        <button type="button" id="btnDownload" class="download-btn" onclick="downloadExcel()">⬇️ UNDUH DATA SEBAGAI FILE EXCEL (.xlsx)</button>
+        <button type="button" id="btnPdf" class="download-pdf-btn" onclick="downloadPdf()">🖨️ UNDUH DATA SEBAGAI FILE PDF</button>
+    </form>
+</div>
+
+<div id="pdfTemplate"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3W56vDYhD7Rn5JIl2ohG9nMbPtWGub5OZE0tpcDigCm1PC8HATyBCBomQIAl9gbeu5Q/exec";
+
+    let lastSubmittedData = null;
+
+    const yr = document.getElementById('tahun');
+    // Set logo src from base64
+    document.getElementById('headerLogo').src = LOGO_B64;
+    const now = new Date();
+    for (let i = now.getFullYear(); i <= now.getFullYear() + 1; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerHTML = i;
+        yr.appendChild(opt);
+    }
+    document.getElementById('bulan').selectedIndex = now.getMonth();
+
+    document.getElementById('rekapForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!confirm("Apakah Data yang Diisi Sudah Lengkap & Benar?")) return;
+
+        const btn = document.getElementById('btnSubmit');
+        const notif = document.getElementById('notif');
+        btn.disabled = true;
+        btn.innerText = "Sedang Menyimpan...";
+
+        const formData = new FormData(this);
+        lastSubmittedData = Object.fromEntries(formData.entries());
+        const params = new URLSearchParams(formData).toString();
+
+        fetch(`${SCRIPT_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
+        .then(() => {
+            notif.style.display = "block";
+            notif.style.background = "#d1f2eb";
+            notif.style.color = "#0e6655";
+            notif.innerText = "✓ Berhasil Disimpan ke Google Sheets! Klik tombol di bawah untuk mengunduh file.";
+            document.getElementById('btnDownload').style.display = 'block';
+            document.getElementById('btnPdf').style.display = 'block';
+            this.reset();
+            window.scrollTo(0, 0);
+            setTimeout(() => document.getElementById('btnDownload').scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+        })
+        .catch(() => alert("Terjadi kesalahan koneksi."))
+        .finally(() => { btn.disabled = false; btn.innerText = "SIMPAN DATA"; });
+    });
+
+    // ── DOWNLOAD EXCEL ──────────────────────────────────────────
+    function downloadExcel() {
+        if (!lastSubmittedData) { alert("Tidak ada data untuk diunduh."); return; }
+        const d = lastSubmittedData;
+        const nama = d.nama || '-';
+        const bulan = d.bulan || '-';
+        const tahun = d.tahun || '-';
+
+        const rows = [
+            ["REKAP PRESENSI PEGAWAI"],
+            ["Bintang Pelajar Galaxy-Kemang Pratama"],
+            [],
+            ["DATA DIRI & PERIODE REKAP"],
+            ["Nama Lengkap", nama],
+            ["NID Pegawai", d.nid || '-'],
+            ["Bulan Rekap", bulan],
+            ["Tahun", tahun],
+            [],
+            ["DATA KEHADIRAN"],
+            ["Hari Kerja (HK)", d.hk || 0],
+            ["Sakit (Hari)", d.sakit || 0],
+            ["Izin (Hari)", d.izin || 0],
+            ["Cuti (Hari)", d.cuti || 0],
+            ["Lupa Absen", d.lupa || '-'],
+            [],
+            ["RINCIAN KP HK (SIMTEG)"],
+            ["KP HK SD-SMP", d.kp_sd || 0],
+            ["KP HK 10-11", d.kp_1011 || 0],
+            ["KP HK 12", d.kp_12 || 0],
+            ["KP SI UTBK", d.kp_si_utbk || 0],
+            ["KP Prosus", d.kp_prosus || 0],
+            ["KP Top Camp", d.kp_top || 0],
+            ["KP Pendamping", d.kp_pend || 0],
+            ["KP Lintas Bidang", d.kp_lintas || 0],
+            ["KP Privat", d.kp_privat || 0],
+            [],
+            ["RINCIAN KP GHL / NHK (SIMTEG)"],
+            ["KP NHK SD-SMP", d.kp_nhk_sd || 0],
+            ["KP NHK 10-11", d.kp_nhk_1011 || 0],
+            ["KP NHK 12", d.kp_nhk_12 || 0],
+            ["KP Ontime (Khusus GHL)", d.kp_ontime || 0],
+            ["Kredit Poin (Khusus GHL)", d.kredit_poin || 0],
+            ["Pelatihan Full Day", d.pelatihan_full || 0],
+            ["Pelatihan Half Day", d.pelatihan_half || 0],
+            [],
+            ["PAES & PEMBINAAN"],
+            ["Pengisian BAKP", d.bakp || '-'],
+            ["Pengiriman LPS", d.lps || '-'],
+            ["Kehadiran KP", d.hadir || '-'],
+            ["Komunikasi Ortu", d.ortu || '-'],
+            ["FGBS / MGMP", d.fgbs || '-'],
+            ["KIP / TGMPA", d.kip || '-'],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{ wch: 35 }, { wch: 30 }];
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap Presensi");
+        const fileName = 'Rekap_Presensi_' + nama.replace(/\s+/g, '_') + '_' + bulan + '_' + tahun + '.xlsx';
+        XLSX.writeFile(wb, fileName);
+    }
+
+    // ── DOWNLOAD PDF ────────────────────────────────────────────
+    function downloadPdf() {
+        if (!lastSubmittedData) { alert("Tidak ada data untuk diunduh."); return; }
+        const d = lastSubmittedData;
+        const nama  = d.nama  || '-';
+        const nid   = d.nid   || '-';
+        const bulan = d.bulan || '-';
+        const tahun = d.tahun || '-';
+        const today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+        function row(lbl, val, alt, full) {
+            return '<div class="pdf-row' + (alt ? ' alt' : '') + (full ? ' full' : '') + '">'
+                 + '<span class="lbl">' + lbl + '</span>'
+                 + '<span class="val">' + val + '</span>'
+                 + '</div>';
         }
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 2500);
+        const html =
+        '<div class="pdf-header">'
+          + '<div class="pdf-header-left" style="display:flex;align-items:center;gap:12px;">'
+            + '<img src="' + LOGO_B64 + '" style="height:52px;border-radius:6px;object-fit:contain;flex-shrink:0;" alt="Logo">'
+            + '<div>'
+              + '<h1 style="margin:0 0 2px;">Rekap Presensi Pegawai</h1>'
+              + '<p style="margin:0;font-size:10px;opacity:0.85;">Bintang Pelajar Galaxy-Kemang Pratama</p>'
+              + '<div class="pdf-meta">Periode: ' + bulan + ' ' + tahun + '</div>'
+            + '</div>'
+          + '</div>'
+          + '<div class="pdf-header-right">Dicetak: ' + today + '</div>'
+        + '</div>'
+        + '<div class="pdf-body">'
+
+          + '<div class="pdf-sec-title blue">&#128100; Data Diri &amp; Periode Rekap</div>'
+          + '<div class="pdf-grid">'
+            + row('Nama Lengkap', nama, false)
+            + row('NID Pegawai', nid, true)
+            + row('Bulan Rekap', bulan, false)
+            + row('Tahun', tahun, true)
+          + '</div>'
+
+          + '<div class="pdf-sec-title blue">&#128197; Data Kehadiran</div>'
+          + '<div class="pdf-grid">'
+            + row('Hari Kerja (HK)', d.hk || 0, false)
+            + row('Sakit (Hari)', d.sakit || 0, true)
+            + row('Izin (Hari)', d.izin || 0, false)
+            + row('Cuti (Hari)', d.cuti || 0, true)
+            + row('Lupa Absen', d.lupa || '-', false, true)
+          + '</div>'
+
+          + '<div class="pdf-sec-title blue">&#128202; Rincian KP HK (SIMTEG)</div>'
+          + '<div class="pdf-grid">'
+            + row('KP HK SD-SMP', d.kp_sd || 0, false)
+            + row('KP HK 10-11', d.kp_1011 || 0, true)
+            + row('KP HK 12', d.kp_12 || 0, false)
+            + row('KP SI UTBK', d.kp_si_utbk || 0, true)
+            + row('KP Prosus', d.kp_prosus || 0, false)
+            + row('KP Top Camp', d.kp_top || 0, true)
+            + row('KP Pendamping', d.kp_pend || 0, false)
+            + row('KP Lintas Bidang', d.kp_lintas || 0, true)
+            + row('KP Privat', d.kp_privat || 0, false, true)
+          + '</div>'
+
+          + '<div class="pdf-sec-title green">&#127775; Rincian KP GHL / NHK (SIMTEG)</div>'
+          + '<div class="pdf-grid">'
+            + row('KP NHK SD-SMP', d.kp_nhk_sd || 0, false)
+            + row('KP NHK 10-11', d.kp_nhk_1011 || 0, true)
+            + row('KP NHK 12', d.kp_nhk_12 || 0, false)
+            + row('KP Ontime (Khusus GHL)', d.kp_ontime || 0, true)
+            + row('Kredit Poin (Khusus GHL)', d.kredit_poin || 0, false, true)
+            + row('Pelatihan Full Day', d.pelatihan_full || 0, true)
+            + row('Pelatihan Half Day', d.pelatihan_half || 0, false)
+          + '</div>'
+
+          + '<div class="pdf-sec-title purple">&#9989; PAES &amp; Pembinaan</div>'
+          + '<div class="pdf-grid">'
+            + row('Pengisian BAKP', d.bakp || '-', false)
+            + row('Pengiriman LPS', d.lps || '-', true)
+            + row('Kehadiran KP', d.hadir || '-', false)
+            + row('Komunikasi Ortu', d.ortu || '-', true)
+            + row('FGBS / MGMP', d.fgbs || '-', false)
+            + row('KIP / TGMPA', d.kip || '-', true)
+          + '</div>'
+
+        + '</div>'
+
+        + '<div class="pdf-footer">'
+          + '<div style="font-size:8px;color:#aaa">Dokumen digenerate otomatis &copy; ' + tahun + ' Bintang Pelajar Galaxy-Kemang Pratama</div>'
+          + '<div class="pdf-ttd"><div>Mengetahui,</div><div class="pdf-ttd-space"></div><div class="pdf-ttd-name">Kepala Cabang</div></div>'
+          + '<div class="pdf-ttd"><div>' + bulan + ' ' + tahun + '</div><div class="pdf-ttd-space"></div><div class="pdf-ttd-name">' + nama + '</div></div>'
+        + '</div>';
+
+        document.getElementById('pdfTemplate').innerHTML = html;
+        setTimeout(function() { window.print(); }, 150);
+    }
+</script>
+
+</div>
+
+<div id="panel-spl" class="tab-panel">
+    
+
+<header>
+    <img id="headerLogo" src="" alt="Logo Bintang Pelajar">
+    <div class="header-text">
+        <h2>Rekap Presensi Pegawai</h2>
+        <p>Bintang Pelajar Galaxy-Kemang Pratama</p>
+    </div>
+</header>
+
+<div class="app-container">
+    <div id="notif"></div>
+    <form id="rekapForm">
+        <div class="card">
+            <div class="section-title">👤 DATA DIRI & PERIODE REKAP</div>
+            <div class="form-grid">
+                <div class="field"><label>Nama Lengkap</label><input type="text" name="nama" required></div>
+                <div class="field"><label>NID PEGAWAI</label><input type="text" name="nid" required></div>
+                <div class="field"><label>Bulan Rekap</label>
+                    <select id="bulan" name="bulan">
+                        <option value="Januari">Januari</option><option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option><option value="April">April</option>
+                        <option value="Mei">Mei</option><option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option><option value="Agustus">Agustus</option>
+                        <option value="September">September</option><option value="Oktober">Oktober</option>
+                        <option value="November">November</option><option value="Desember">Desember</option>
+                    </select>
+                </div>
+                <div class="field"><label>Tahun</label><select id="tahun" name="tahun"></select></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📅 DATA KEHADIRAN</div>
+            <div class="form-grid">
+                <div class="field"><label>Hari Kerja (HK)</label><input type="number" step="any" name="hk" value="0"></div>
+                <div class="field"><label>Sakit (Hari)</label><input type="number" step="any" name="sakit" value="0"></div>
+                <div class="field"><label>Izin (Hari)</label><input type="number" step="any" name="izin" value="0"></div>
+                <div class="field"><label>Cuti (Hari)</label><input type="number" step="any" name="cuti" value="0"></div>
+                <div class="field full"><label>Lupa Absen</label><textarea name="lupa" rows="2" placeholder="Sebutkan tanggalnya"></textarea></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📊 RINCIAN KP HK (SIMTEG)</div>
+            <div class="form-grid">
+                <div class="field"><label>KP HK SD-SMP</label><input type="number" step="any" name="kp_sd" value="0"></div>
+                <div class="field"><label>KP HK 10-11</label><input type="number" step="any" name="kp_1011" value="0"></div>
+                <div class="field"><label>KP HK 12</label><input type="number" step="any" name="kp_12" value="0"></div>
+                <div class="field"><label>KP SI UTBK</label><input type="number" step="any" name="kp_si_utbk" value="0"></div>
+                <div class="field"><label>KP Prosus</label><input type="number" step="any" name="kp_prosus" value="0"></div>
+                <div class="field"><label>KP Top Camp</label><input type="number" step="any" name="kp_top" value="0"></div>
+                <div class="field"><label>KP Pendamping</label><input type="number" step="any" name="kp_pend" value="0"></div>
+                <div class="field"><label>KP Lintas Bidang</label><input type="number" step="any" name="kp_lintas" value="0"></div>
+                <div class="field full"><label>KP Privat</label><input type="number" step="any" name="kp_privat" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🌟 RINCIAN KP GHL / NHK (SIMTEG)</div>
+            <div class="form-grid">
+                <div class="field"><label>KP NHK SD-SMP</label><input type="number" step="any" name="kp_nhk_sd" value="0"></div>
+                <div class="field"><label>KP NHK 10-11</label><input type="number" step="any" name="kp_nhk_1011" value="0"></div>
+                <div class="field"><label>KP NHK 12</label><input type="number" step="any" name="kp_nhk_12" value="0"></div>
+                <div class="field"><label>KP Ontime (Khusus GHL)</label><input type="number" step="any" name="kp_ontime" value="0"></div>
+                <div class="field full"><label>Kredit Poin (Khusus GHL)</label><input type="number" step="any" name="kredit_poin" value="0"></div>
+                <div class="field"><label>Pelatihan Full Day</label><input type="number" step="any" name="pelatihan_full" value="0"></div>
+                <div class="field"><label>Pelatihan Half Day</label><input type="number" step="any" name="pelatihan_half" value="0"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">✅ PAES & PEMBINAAN</div>
+            <div class="form-grid">
+                <div class="field"><label>PENGISIAN BAKP</label>
+                    <select name="bakp">
+                        <option value="lengkap & tepat waktu">Lengkap & Tepat Waktu</option>
+                        <option value="tidak lengkap">Tidak Lengkap/Terlambat</option>
+                    </select>
+                </div>
+                <div class="field"><label>PENGIRIMAN LPS</label>
+                    <select name="lps">
+                        <option value="Sudah 100%">Sudah 100%</option>
+                        <option value="Belum 100%">Belum 100%</option>
+                        <option value="Belum sama sekali">Belum sama sekali</option>
+                    </select>
+                </div>
+                <div class="field"><label>Kehadiran KP</label>
+                    <select name="hadir">
+                        <option value="selalu hadir">Selalu Hadir</option>
+                        <option value="kadang cancel">Kadang Cancel</option>
+                        <option value="sering cancel">Sering Cancel</option>
+                    </select>
+                </div>
+                <div class="field"><label>Komunikasi Ortu</label>
+                    <select name="ortu"><option value="sering">Sering</option><option value="jarang">Jarang</option></select>
+                </div>
+                <div class="field"><label>FGBS / MGMP</label>
+                    <select name="fgbs"><option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option></select>
+                </div>
+                <div class="field"><label>KIP / TGMPA</label>
+                    <select name="kip"><option value="selalu ikut">Selalu Ikut</option><option value="jarang">Jarang</option></select>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="submit-btn">SIMPAN DATA</button>
+        <button type="button" id="btnDownload" class="download-btn" onclick="downloadExcel()">⬇️ UNDUH DATA SEBAGAI FILE EXCEL (.xlsx)</button>
+        <button type="button" id="btnPdf" class="download-pdf-btn" onclick="downloadPdf()">🖨️ UNDUH DATA SEBAGAI FILE PDF</button>
+    </form>
+</div>
+
+<div id="pdfTemplate"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3W56vDYhD7Rn5JIl2ohG9nMbPtWGub5OZE0tpcDigCm1PC8HATyBCBomQIAl9gbeu5Q/exec";
+
+    let lastSubmittedData = null;
+
+    const yr = document.getElementById('tahun');
+    // Set logo src from base64
+    document.getElementById('headerLogo').src = LOGO_B64;
+    const now = new Date();
+    for (let i = now.getFullYear(); i <= now.getFullYear() + 1; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.innerHTML = i;
+        yr.appendChild(opt);
+    }
+    document.getElementById('bulan').selectedIndex = now.getMonth();
+
+    document.getElementById('rekapForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!confirm("Apakah Data yang Diisi Sudah Lengkap & Benar?")) return;
+
+        const btn = document.getElementById('btnSubmit');
+        const notif = document.getElementById('notif');
+        btn.disabled = true;
+        btn.innerText = "Sedang Menyimpan...";
+
+        const formData = new FormData(this);
+        lastSubmittedData = Object.fromEntries(formData.entries());
+        const params = new URLSearchParams(formData).toString();
+
+        fetch(`${SCRIPT_URL}?${params}`, { method: 'GET', mode: 'no-cors' })
+        .then(() => {
+            notif.style.display = "block";
+            notif.style.background = "#d1f2eb";
+            notif.style.color = "#0e6655";
+            notif.innerText = "✓ Berhasil Disimpan ke Google Sheets! Klik tombol di bawah untuk mengunduh file.";
+            document.getElementById('btnDownload').style.display = 'block';
+            document.getElementById('btnPdf').style.display = 'block';
+            this.reset();
+            window.scrollTo(0, 0);
+            setTimeout(() => document.getElementById('btnDownload').scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+        })
+        .catch(() => alert("Terjadi kesalahan koneksi."))
+        .finally(() => { btn.disabled = false; btn.innerText = "SIMPAN DATA"; });
+    });
+
+    // ── DOWNLOAD EXCEL ──────────────────────────────────────────
+    function downloadExcel() {
+        if (!lastSubmittedData) { alert("Tidak ada data untuk diunduh."); return; }
+        const d = lastSubmittedData;
+        const nama = d.nama || '-';
+        const bulan = d.bulan || '-';
+        const tahun = d.tahun || '-';
+
+        const rows = [
+            ["REKAP PRESENSI PEGAWAI"],
+            ["Bintang Pelajar Galaxy-Kemang Pratama"],
+            [],
+            ["DATA DIRI & PERIODE REKAP"],
+            ["Nama Lengkap", nama],
+            ["NID Pegawai", d.nid || '-'],
+            ["Bulan Rekap", bulan],
+            ["Tahun", tahun],
+            [],
+            ["DATA KEHADIRAN"],
+            ["Hari Kerja (HK)", d.hk || 0],
+            ["Sakit (Hari)", d.sakit || 0],
+            ["Izin (Hari)", d.izin || 0],
+            ["Cuti (Hari)", d.cuti || 0],
+            ["Lupa Absen", d.lupa || '-'],
+            [],
+            ["RINCIAN KP HK (SIMTEG)"],
+            ["KP HK SD-SMP", d.kp_sd || 0],
+            ["KP HK 10-11", d.kp_1011 || 0],
+            ["KP HK 12", d.kp_12 || 0],
+            ["KP SI UTBK", d.kp_si_utbk || 0],
+            ["KP Prosus", d.kp_prosus || 0],
+            ["KP Top Camp", d.kp_top || 0],
+            ["KP Pendamping", d.kp_pend || 0],
+            ["KP Lintas Bidang", d.kp_lintas || 0],
+            ["KP Privat", d.kp_privat || 0],
+            [],
+            ["RINCIAN KP GHL / NHK (SIMTEG)"],
+            ["KP NHK SD-SMP", d.kp_nhk_sd || 0],
+            ["KP NHK 10-11", d.kp_nhk_1011 || 0],
+            ["KP NHK 12", d.kp_nhk_12 || 0],
+            ["KP Ontime (Khusus GHL)", d.kp_ontime || 0],
+            ["Kredit Poin (Khusus GHL)", d.kredit_poin || 0],
+            ["Pelatihan Full Day", d.pelatihan_full || 0],
+            ["Pelatihan Half Day", d.pelatihan_half || 0],
+            [],
+            ["PAES & PEMBINAAN"],
+            ["Pengisian BAKP", d.bakp || '-'],
+            ["Pengiriman LPS", d.lps || '-'],
+            ["Kehadiran KP", d.hadir || '-'],
+            ["Komunikasi Ortu", d.ortu || '-'],
+            ["FGBS / MGMP", d.fgbs || '-'],
+            ["KIP / TGMPA", d.kip || '-'],
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{ wch: 35 }, { wch: 30 }];
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap Presensi");
+        const fileName = 'Rekap_Presensi_' + nama.replace(/\s+/g, '_') + '_' + bulan + '_' + tahun + '.xlsx';
+        XLSX.writeFile(wb, fileName);
+    }
+
+    // ── DOWNLOAD PDF ────────────────────────────────────────────
+    function downloadPdf() {
+        if (!lastSubmittedData) { alert("Tidak ada data untuk diunduh."); return; }
+        const d = lastSubmittedData;
+        const nama  = d.nama  || '-';
+        const nid   = d.nid   || '-';
+        const bulan = d.bulan || '-';
+        const tahun = d.tahun || '-';
+        const today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+        function row(lbl, val, alt, full) {
+            return '<div class="pdf-row' + (alt ? ' alt' : '') + (full ? ' full' : '') + '">'
+                 + '<span class="lbl">' + lbl + '</span>'
+                 + '<span class="val">' + val + '</span>'
+                 + '</div>';
         }
 
-        function pdfRow(label, value, alt=false) {
-            return `<div class="pdf-row ${alt ? 'alt' : ''}"><span>${label}</span><strong>${value}</strong></div>`;
-        }
+        const html =
+        '<div class="pdf-header">'
+          + '<div class="pdf-header-left" style="display:flex;align-items:center;gap:12px;">'
+            + '<img src="' + LOGO_B64 + '" style="height:52px;border-radius:6px;object-fit:contain;flex-shrink:0;" alt="Logo">'
+            + '<div>'
+              + '<h1 style="margin:0 0 2px;">Rekap Presensi Pegawai</h1>'
+              + '<p style="margin:0;font-size:10px;opacity:0.85;">Bintang Pelajar Galaxy-Kemang Pratama</p>'
+              + '<div class="pdf-meta">Periode: ' + bulan + ' ' + tahun + '</div>'
+            + '</div>'
+          + '</div>'
+          + '<div class="pdf-header-right">Dicetak: ' + today + '</div>'
+        + '</div>'
+        + '<div class="pdf-body">'
 
-        function genPresensi() {
-            const d = {
-                n: document.getElementById('p_nama').value || '-',
-                u: document.getElementById('p_unit').value,
-                b: document.getElementById('p_bulan').value,
-                t: document.getElementById('p_tahun').value,
-                h: document.getElementById('p_hadir').value,
-                l: document.getElementById('p_lambat').value
-            };
-            
-            document.getElementById('pdfOutput').innerHTML = `
-                <div class="pdf-page">
-                    <div class="pdf-head">
-                        <div><h3>REKAP PRESENSI</h3><p>Bintang Pelajar ${d.u}</p></div>
-                        <div style="text-align:right">Periode: ${d.b} ${d.t}</div>
-                    </div>
-                    <div class="pdf-body">
-                        <div class="pdf-sect">Data Pengajar</div>
-                        ${pdfRow('Nama Lengkap', d.n)}
-                        ${pdfRow('Unit', d.u, true)}
-                        <div class="pdf-sect">Ringkasan</div>
-                        ${pdfRow('Kehadiran', d.h + ' Hari')}
-                        ${pdfRow('Keterlambatan', d.l + ' Menit', true)}
-                    </div>
-                    <div class="pdf-foot">
-                        <div class="pdf-sig">Mengetahui,<div class="pdf-sig-space"></div><div class="pdf-sig-line">Kepala Cabang</div></div>
-                    </div>
-                </div>`;
-            
-            document.getElementById('p_xl').style.display = 'block';
-            document.getElementById('p_pdf').style.display = 'block';
-            showToast('Data Presensi Siap');
-        }
+          + '<div class="pdf-sec-title blue">&#128100; Data Diri &amp; Periode Rekap</div>'
+          + '<div class="pdf-grid">'
+            + row('Nama Lengkap', nama, false)
+            + row('NID Pegawai', nid, true)
+            + row('Bulan Rekap', bulan, false)
+            + row('Tahun', tahun, true)
+          + '</div>'
 
-        function genSPL() {
-            const d = {
-                n: document.getElementById('s_nama').value || '-',
-                j: document.getElementById('s_jabatan').value || '-',
-                t: document.getElementById('s_tgl').value || '-',
-                h: document.getElementById('s_jam').value,
-                k: document.getElementById('s_ket').value || '-'
-            };
-            
-            document.getElementById('pdfOutput').innerHTML = `
-                <div class="pdf-page">
-                    <div class="pdf-head" style="background:#4a148c">
-                        <div><h3>SURAT PERINTAH LEMBUR</h3><p>BP Galaxy-Kemang Pratama</p></div>
-                        <div style="text-align:right">Tgl: ${d.t}</div>
-                    </div>
-                    <div class="pdf-body">
-                        <div class="pdf-sect">Penerima Perintah</div>
-                        ${pdfRow('Nama', d.n)}
-                        ${pdfRow('Jabatan', d.j, true)}
-                        <div class="pdf-sect">Detail Lembur</div>
-                        ${pdfRow('Durasi', d.h + ' Jam')}
-                        ${pdfRow('Pekerjaan', d.k, true)}
-                    </div>
-                    <div class="pdf-foot">
-                        <div class="pdf-sig">Penerima,<div class="pdf-sig-space"></div><div class="pdf-sig-line">${d.n}</div></div>
-                        <div class="pdf-sig">Pemberi Perintah,<div class="pdf-sig-space"></div><div class="pdf-sig-line">Manager</div></div>
-                    </div>
-                </div>`;
-            
-            document.getElementById('s_xl').style.display = 'block';
-            document.getElementById('s_pdf').style.display = 'block';
-            showToast('Surat SPL Siap');
-        }
-    </script>
+          + '<div class="pdf-sec-title blue">&#128197; Data Kehadiran</div>'
+          + '<div class="pdf-grid">'
+            + row('Hari Kerja (HK)', d.hk || 0, false)
+            + row('Sakit (Hari)', d.sakit || 0, true)
+            + row('Izin (Hari)', d.izin || 0, false)
+            + row('Cuti (Hari)', d.cuti || 0, true)
+            + row('Lupa Absen', d.lupa || '-', false, true)
+          + '</div>'
+
+          + '<div class="pdf-sec-title blue">&#128202; Rincian KP HK (SIMTEG)</div>'
+          + '<div class="pdf-grid">'
+            + row('KP HK SD-SMP', d.kp_sd || 0, false)
+            + row('KP HK 10-11', d.kp_1011 || 0, true)
+            + row('KP HK 12', d.kp_12 || 0, false)
+            + row('KP SI UTBK', d.kp_si_utbk || 0, true)
+            + row('KP Prosus', d.kp_prosus || 0, false)
+            + row('KP Top Camp', d.kp_top || 0, true)
+            + row('KP Pendamping', d.kp_pend || 0, false)
+            + row('KP Lintas Bidang', d.kp_lintas || 0, true)
+            + row('KP Privat', d.kp_privat || 0, false, true)
+          + '</div>'
+
+          + '<div class="pdf-sec-title green">&#127775; Rincian KP GHL / NHK (SIMTEG)</div>'
+          + '<div class="pdf-grid">'
+            + row('KP NHK SD-SMP', d.kp_nhk_sd || 0, false)
+            + row('KP NHK 10-11', d.kp_nhk_1011 || 0, true)
+            + row('KP NHK 12', d.kp_nhk_12 || 0, false)
+            + row('KP Ontime (Khusus GHL)', d.kp_ontime || 0, true)
+            + row('Kredit Poin (Khusus GHL)', d.kredit_poin || 0, false, true)
+            + row('Pelatihan Full Day', d.pelatihan_full || 0, true)
+            + row('Pelatihan Half Day', d.pelatihan_half || 0, false)
+          + '</div>'
+
+          + '<div class="pdf-sec-title purple">&#9989; PAES &amp; Pembinaan</div>'
+          + '<div class="pdf-grid">'
+            + row('Pengisian BAKP', d.bakp || '-', false)
+            + row('Pengiriman LPS', d.lps || '-', true)
+            + row('Kehadiran KP', d.hadir || '-', false)
+            + row('Komunikasi Ortu', d.ortu || '-', true)
+            + row('FGBS / MGMP', d.fgbs || '-', false)
+            + row('KIP / TGMPA', d.kip || '-', true)
+          + '</div>'
+
+        + '</div>'
+
+        + '<div class="pdf-footer">'
+          + '<div style="font-size:8px;color:#aaa">Dokumen digenerate otomatis &copy; ' + tahun + ' Bintang Pelajar Galaxy-Kemang Pratama</div>'
+          + '<div class="pdf-ttd"><div>Mengetahui,</div><div class="pdf-ttd-space"></div><div class="pdf-ttd-name">Kepala Cabang</div></div>'
+          + '<div class="pdf-ttd"><div>' + bulan + ' ' + tahun + '</div><div class="pdf-ttd-space"></div><div class="pdf-ttd-name">' + nama + '</div></div>'
+        + '</div>';
+
+        document.getElementById('pdfTemplate').innerHTML = html;
+        setTimeout(function() { window.print(); }, 150);
+    }
+</script>
+
+</div>
+
+<script>
+    function gantiTab(namaTab) {
+        // Sembunyikan semua panel
+        document.getElementById('panel-presensi').classList.remove('active');
+        document.getElementById('panel-spl').classList.remove('active');
+        
+        // Matikan semua tombol
+        document.getElementById('btn-presensi').classList.remove('active');
+        document.getElementById('btn-spl').classList.remove('active');
+        
+        // Aktifkan yang dipilih
+        document.getElementById('panel-' + namaTab).classList.add('active');
+        document.getElementById('btn-' + namaTab).classList.add('active');
+        
+        window.scrollTo(0,0);
+    }
+
+    // Pastikan semua input angka mendukung desimal
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.setAttribute('step', 'any');
+    });
+</script>
 </body>
 </html>
