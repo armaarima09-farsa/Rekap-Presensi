@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistem Presensi & SPL Bintang Pelajar</title>
-<style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f5f5f5; overflow: hidden; }
-    .topbar { display: flex; gap: 10px; padding: 12px; background: #1a237e; box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 1000; position: relative; }
-    .tab-btn { padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; background: rgba(255,255,255,0.15); color: white; transition: all 0.2s ease; }
-    .tab-btn.active { background: #ffab00; color: #1a237e; }
-    .frame-container { width: 100vw; height: calc(100vh - 64px); position: relative; }
-    iframe { width: 100%; height: 100%; border: none; display: none; background: white; }
-    iframe.active { display: block; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Presensi & SPL - Bintang Pelajar</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; overflow: hidden; }
+        
+        .topbar { 
+            display: flex; gap: 10px; padding: 12px; background: #1a237e; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 1000; position: relative; 
+        }
+        
+        .tab-btn { 
+            padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; 
+            font-weight: bold; background: rgba(255,255,255,0.15); color: white; transition: 0.3s; 
+        }
+        
+        .tab-btn.active { background: #ffab00; color: #1a237e; }
+        
+        .frame-container { width: 100vw; height: calc(100vh - 64px); position: relative; }
+        
+        iframe { width: 100%; height: 100%; border: none; display: none; background: white; }
+        iframe.active { display: block; }
+    </style>
 </head>
 <body>
 
@@ -23,330 +34,118 @@
 </div>
 
 <div class="frame-container">
-    <!-- TAB PRESENSI -->
-    <iframe id="presensi" class="active" srcdoc="
-        <html>
-        <head>
-            <style>
-                body { font-family: sans-serif; padding: 20px; background: #f4f7f9; }
-                .card { background: white; border-radius: 12px; padding: 25px; border: 1px solid #dfe6e9; max-width: 500px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-                .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-                label { font-size: 13px; font-weight: bold; color: #4b4b4b; }
-                input { padding: 12px; border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; width: 100%; transition: border 0.3s; }
-                input:focus { outline: none; border-color: #1a237e; box-shadow: 0 0 0 3px rgba(26,35,126,0.1); }
-                input[readonly] { background-color: #e9ecef; font-weight: bold; color: #1a237e; cursor: not-allowed; }
-                h2 { color: #1a237e; font-size: 20px; margin-bottom: 25px; border-left: 5px solid #ffab00; padding-left: 10px; }
-                .info { font-size: 11px; color: #6c757d; margin-top: -10px; margin-bottom: 15px; }
-            </style>
-        </head>
-        <body>
-            <div class='card'>
-                <h2>REKAP PRESENSI</h2>
-                <div class='field'>
-                    <label>NID (Nomor Induk Dosen/Pegawai)</label>
-                    <input type='text' id='nid' placeholder='Masukkan NID (Contoh: 00101)' oninput='cariNama(this.value)'>
-                </div>
-                <p class='info'>*Nama akan terisi otomatis setelah NID valid dimasukkan.</p>
-                <div class='field'>
-                    <label>Nama Lengkap</label>
-                    <input type='text' id='nama' readonly placeholder='(Otomatis)'>
-                </div>
+    <!-- TAB REKAP PRESENSI -->
+    <iframe id="presensi" class="active" srcdoc='
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <style>
+            body { font-family: sans-serif; padding: 40px; background: #f8f9fa; display: flex; justify-content: center; }
+            .form-card { background: white; border-radius: 12px; padding: 30px; width: 100%; max-width: 500px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+            h2 { color: #1a237e; text-align: center; margin-bottom: 25px; border-bottom: 2px solid #ffab00; padding-bottom: 10px; }
+            .field { margin-bottom: 20px; }
+            label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 8px; color: #444; }
+            input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; outline: none; }
+            input:focus { border-color: #1a237e; box-shadow: 0 0 5px rgba(26,35,126,0.2); }
+            input[readonly] { background-color: #e9ecef; color: #495057; cursor: not-allowed; border-color: #ddd; }
+            .helper { font-size: 11px; color: #888; margin-top: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="form-card">
+            <h2>Input Presensi</h2>
+            <div class="field">
+                <label>NID (Nomor Induk Pegawai)</label>
+                <input type="text" id="nidInput" placeholder="Ketik NID (Contoh: 00155)" autocomplete="off">
+                <p class="helper">*Nama akan muncul otomatis setelah NID lengkap</p>
             </div>
-            <script>
-                const db = {
-    "00101": "SENO ARIEF BUDIMAN",
-    "00144": "RENI SUSANTI",
-    "00155": "FARSA SEPTIA ADI NUGROHO",
-    "00225": "AMALIA PURWATININGRUM",
-    "00266": "NUR SISWADI",
-    "00287": "ANTON",
-    "00366": "MUSLIM PRIYATNA",
-    "00381": "M ASEP MAULANA YUSUF",
-    "00432": "MUHAMAD WAHYU RIDLO",
-    "00487": "M INDRA SAKTI JAYA",
-    "00931": "ANUGRAH RYAN AENDY",
-    "00970": "AFRIYANTI",
-    "00975": "DIANA NUR HAYATI",
-    "01028": "SAADAH",
-    "01329": "MUHAMMAD HILAL",
-    "01357": "ARRIZALDY TUFLIYADDO",
-    "01611": "ANNISA NURRAHMI SYABRINA P",
-    "01655": "M HADRI NOOR",
-    "01667": "RAMADHAN RUDOLF PARTOGI",
-    "01670": "DEVI HENDRIYANA",
-    "01688": "NABILA FEBRIANI PUTRI",
-    "01692": "RANI WAHYUNINGSIH",
-    "01756": "EVA HIDAYATURROHMAH",
-    "01765": "ANIS MUTIARA",
-    "01930": "NURULFIDA LIDINILLAH A",
-    "01933": "KUNIFAH NADIYAH",
-    "01936": "ANGGRAENI P B",
-    "02204": "DEWI LARASATI",
-    "00059": "AHMAD KHUAILID",
-    "00175": "ANIFAH PUTRI LESTARI",
-    "00212": "VICKY OKTRIVIANI",
-    "00247": "NOVITA SARI",
-    "00336": "EKA AYU WIDIASTUTI",
-    "00375": "MUHAMMAD RIDWAN",
-    "00395": "MUHAMMAD THUFEIL",
-    "00446": "BAYU PRASETYO",
-    "00649": "WIDIYANTO",
-    "00718": "FITRI MARETA",
-    "00823": "FARIZ HILMAN ADLY",
-    "00927": "HENDRIANA",
-    "00951": "SITI AMINAH",
-    "01006": "DWI PUSPITA SARI",
-    "01051": "CERY CHINTIA",
-    "01134": "FITHRIYYAH RIZQIKA",
-    "01140": "DWI DHINI OKTAVIANI",
-    "01157": "LINDA WENI",
-    "01201": "SAYYIDAH KHOERUNNISA",
-    "01267": "DENHAR GENTAYU P",
-    "01289": "ENENG ZULFA ISNAENI",
-    "01434": "ATOPANDRI",
-    "01452": "TIINI MUJAHIDAH ASHODIQ",
-    "01455": "YUSUP KOMARUDIN",
-    "01473": "AKMAL FIRMANSYAH",
-    "01500": "SHEILLA SAFITRI",
-    "01509": "MIFTAHUDIN",
-    "01660": "YONATAN NALLE",
-    "01829": "PUNGKY FAJAR ADI V",
-    "01932": "RUDI SATYA H",
-    "02106": "ASSIFA ATSNA HANIFA",
-    "101": "SENO ARIEF BUDIMAN",
-    "144": "RENI SUSANTI",
-    "155": "FARSA SEPTIA ADI NUGROHO",
-    "225": "AMALIA PURWATININGRUM",
-    "266": "NUR SISWADI",
-    "287": "ANTON",
-    "366": "MUSLIM PRIYATNA",
-    "381": "M ASEP MAULANA YUSUF",
-    "432": "MUHAMAD WAHYU RIDLO",
-    "487": "M INDRA SAKTI JAYA",
-    "931": "ANUGRAH RYAN AENDY",
-    "970": "AFRIYANTI",
-    "975": "DIANA NUR HAYATI",
-    "1028": "SAADAH",
-    "1329": "MUHAMMAD HILAL",
-    "1357": "ARRIZALDY TUFLIYADDO",
-    "1611": "ANNISA NURRAHMI SYABRINA P",
-    "1655": "M HADRI NOOR",
-    "1667": "RAMADHAN RUDOLF PARTOGI",
-    "1670": "DEVI HENDRIYANA",
-    "1688": "NABILA FEBRIANI PUTRI",
-    "1692": "RANI WAHYUNINGSIH",
-    "1756": "EVA HIDAYATURROHMAH",
-    "1765": "ANIS MUTIARA",
-    "1930": "NURULFIDA LIDINILLAH A",
-    "1933": "KUNIFAH NADIYAH",
-    "1936": "ANGGRAENI P B",
-    "2204": "DEWI LARASATI",
-    "59": "AHMAD KHUAILID",
-    "175": "ANIFAH PUTRI LESTARI",
-    "212": "VICKY OKTRIVIANI",
-    "247": "NOVITA SARI",
-    "336": "EKA AYU WIDIASTUTI",
-    "375": "MUHAMMAD RIDWAN",
-    "395": "MUHAMMAD THUFEIL",
-    "446": "BAYU PRASETYO",
-    "649": "WIDIYANTO",
-    "718": "FITRI MARETA",
-    "823": "FARIZ HILMAN ADLY",
-    "927": "HENDRIANA",
-    "951": "SITI AMINAH",
-    "1006": "DWI PUSPITA SARI",
-    "1051": "CERY CHINTIA",
-    "1134": "FITHRIYYAH RIZQIKA",
-    "1140": "DWI DHINI OKTAVIANI",
-    "1157": "LINDA WENI",
-    "1201": "SAYYIDAH KHOERUNNISA",
-    "1267": "DENHAR GENTAYU P",
-    "1289": "ENENG ZULFA ISNAENI",
-    "1434": "ATOPANDRI",
-    "1452": "TIINI MUJAHIDAH ASHODIQ",
-    "1455": "YUSUP KOMARUDIN",
-    "1473": "AKMAL FIRMANSYAH",
-    "1500": "SHEILLA SAFITRI",
-    "1509": "MIFTAHUDIN",
-    "1660": "YONATAN NALLE",
-    "1829": "PUNGKY FAJAR ADI V",
-    "1932": "RUDI SATYA H",
-    "2106": "ASSIFA ATSNA HANIFA"
-};
-                function cariNama(v) {
-                    const nidClean = v.trim();
-                    const targetInput = document.getElementById('nama');
-                    if (db[nidClean]) {
-                        targetInput.value = db[nidClean];
-                    } else {
-                        targetInput.value = '';
-                    }
-                }
-            </script>
-        </body>
-        </html>
-    "></iframe>
+            <div class="field">
+                <label>Nama Lengkap Pegawai</label>
+                <input type="text" id="namaInput" readonly placeholder="Akan terisi otomatis...">
+            </div>
+        </div>
 
-    <!-- TAB SPL -->
-    <iframe id="spl" srcdoc="
-        <html>
-        <head>
-            <style>
-                body { font-family: sans-serif; padding: 20px; background: #f4f7f9; }
-                .card { background: white; border-radius: 12px; padding: 25px; border: 1px solid #dfe6e9; max-width: 500px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-                .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-                label { font-size: 13px; font-weight: bold; color: #4b4b4b; }
-                input { padding: 12px; border: 1px solid #ced4da; border-radius: 8px; font-size: 15px; width: 100%; }
-                input[readonly] { background-color: #e9ecef; font-weight: bold; color: #1a237e; }
-                h2 { color: #1a237e; font-size: 20px; margin-bottom: 25px; border-left: 5px solid #ffab00; padding-left: 10px; }
-            </style>
-        </head>
-        <body>
-            <div class='card'>
-                <h2>SURAT PERINTAH LEMBUR</h2>
-                <div class='field'>
-                    <label>NID</label>
-                    <input type='text' id='nid_spl' placeholder='Masukkan NID...' oninput='cariNamaSpl(this.value)'>
-                </div>
-                <div class='field'>
-                    <label>Nama Pegawai</label>
-                    <input type='text' id='nama_spl' readonly placeholder='(Otomatis)'>
-                </div>
-            </div>
-            <script>
-                const db = {
-    "00101": "SENO ARIEF BUDIMAN",
-    "00144": "RENI SUSANTI",
-    "00155": "FARSA SEPTIA ADI NUGROHO",
-    "00225": "AMALIA PURWATININGRUM",
-    "00266": "NUR SISWADI",
-    "00287": "ANTON",
-    "00366": "MUSLIM PRIYATNA",
-    "00381": "M ASEP MAULANA YUSUF",
-    "00432": "MUHAMAD WAHYU RIDLO",
-    "00487": "M INDRA SAKTI JAYA",
-    "00931": "ANUGRAH RYAN AENDY",
-    "00970": "AFRIYANTI",
-    "00975": "DIANA NUR HAYATI",
-    "01028": "SAADAH",
-    "01329": "MUHAMMAD HILAL",
-    "01357": "ARRIZALDY TUFLIYADDO",
-    "01611": "ANNISA NURRAHMI SYABRINA P",
-    "01655": "M HADRI NOOR",
-    "01667": "RAMADHAN RUDOLF PARTOGI",
-    "01670": "DEVI HENDRIYANA",
-    "01688": "NABILA FEBRIANI PUTRI",
-    "01692": "RANI WAHYUNINGSIH",
-    "01756": "EVA HIDAYATURROHMAH",
-    "01765": "ANIS MUTIARA",
-    "01930": "NURULFIDA LIDINILLAH A",
-    "01933": "KUNIFAH NADIYAH",
-    "01936": "ANGGRAENI P B",
-    "02204": "DEWI LARASATI",
-    "00059": "AHMAD KHUAILID",
-    "00175": "ANIFAH PUTRI LESTARI",
-    "00212": "VICKY OKTRIVIANI",
-    "00247": "NOVITA SARI",
-    "00336": "EKA AYU WIDIASTUTI",
-    "00375": "MUHAMMAD RIDWAN",
-    "00395": "MUHAMMAD THUFEIL",
-    "00446": "BAYU PRASETYO",
-    "00649": "WIDIYANTO",
-    "00718": "FITRI MARETA",
-    "00823": "FARIZ HILMAN ADLY",
-    "00927": "HENDRIANA",
-    "00951": "SITI AMINAH",
-    "01006": "DWI PUSPITA SARI",
-    "01051": "CERY CHINTIA",
-    "01134": "FITHRIYYAH RIZQIKA",
-    "01140": "DWI DHINI OKTAVIANI",
-    "01157": "LINDA WENI",
-    "01201": "SAYYIDAH KHOERUNNISA",
-    "01267": "DENHAR GENTAYU P",
-    "01289": "ENENG ZULFA ISNAENI",
-    "01434": "ATOPANDRI",
-    "01452": "TIINI MUJAHIDAH ASHODIQ",
-    "01455": "YUSUP KOMARUDIN",
-    "01473": "AKMAL FIRMANSYAH",
-    "01500": "SHEILLA SAFITRI",
-    "01509": "MIFTAHUDIN",
-    "01660": "YONATAN NALLE",
-    "01829": "PUNGKY FAJAR ADI V",
-    "01932": "RUDI SATYA H",
-    "02106": "ASSIFA ATSNA HANIFA",
-    "101": "SENO ARIEF BUDIMAN",
-    "144": "RENI SUSANTI",
-    "155": "FARSA SEPTIA ADI NUGROHO",
-    "225": "AMALIA PURWATININGRUM",
-    "266": "NUR SISWADI",
-    "287": "ANTON",
-    "366": "MUSLIM PRIYATNA",
-    "381": "M ASEP MAULANA YUSUF",
-    "432": "MUHAMAD WAHYU RIDLO",
-    "487": "M INDRA SAKTI JAYA",
-    "931": "ANUGRAH RYAN AENDY",
-    "970": "AFRIYANTI",
-    "975": "DIANA NUR HAYATI",
-    "1028": "SAADAH",
-    "1329": "MUHAMMAD HILAL",
-    "1357": "ARRIZALDY TUFLIYADDO",
-    "1611": "ANNISA NURRAHMI SYABRINA P",
-    "1655": "M HADRI NOOR",
-    "1667": "RAMADHAN RUDOLF PARTOGI",
-    "1670": "DEVI HENDRIYANA",
-    "1688": "NABILA FEBRIANI PUTRI",
-    "1692": "RANI WAHYUNINGSIH",
-    "1756": "EVA HIDAYATURROHMAH",
-    "1765": "ANIS MUTIARA",
-    "1930": "NURULFIDA LIDINILLAH A",
-    "1933": "KUNIFAH NADIYAH",
-    "1936": "ANGGRAENI P B",
-    "2204": "DEWI LARASATI",
-    "59": "AHMAD KHUAILID",
-    "175": "ANIFAH PUTRI LESTARI",
-    "212": "VICKY OKTRIVIANI",
-    "247": "NOVITA SARI",
-    "336": "EKA AYU WIDIASTUTI",
-    "375": "MUHAMMAD RIDWAN",
-    "395": "MUHAMMAD THUFEIL",
-    "446": "BAYU PRASETYO",
-    "649": "WIDIYANTO",
-    "718": "FITRI MARETA",
-    "823": "FARIZ HILMAN ADLY",
-    "927": "HENDRIANA",
-    "951": "SITI AMINAH",
-    "1006": "DWI PUSPITA SARI",
-    "1051": "CERY CHINTIA",
-    "1134": "FITHRIYYAH RIZQIKA",
-    "1140": "DWI DHINI OKTAVIANI",
-    "1157": "LINDA WENI",
-    "1201": "SAYYIDAH KHOERUNNISA",
-    "1267": "DENHAR GENTAYU P",
-    "1289": "ENENG ZULFA ISNAENI",
-    "1434": "ATOPANDRI",
-    "1452": "TIINI MUJAHIDAH ASHODIQ",
-    "1455": "YUSUP KOMARUDIN",
-    "1473": "AKMAL FIRMANSYAH",
-    "1500": "SHEILLA SAFITRI",
-    "1509": "MIFTAHUDIN",
-    "1660": "YONATAN NALLE",
-    "1829": "PUNGKY FAJAR ADI V",
-    "1932": "RUDI SATYA H",
-    "2106": "ASSIFA ATSNA HANIFA"
-};
-                function cariNamaSpl(v) {
-                    const nidClean = v.trim();
-                    const targetInput = document.getElementById('nama_spl');
-                    if (db[nidClean]) {
-                        targetInput.value = db[nidClean];
-                    } else {
-                        targetInput.value = '';
-                    }
+        <script>
+            const dbPegawai = {
+            "00101": "SENO ARIEF BUDIMAN",
+            "00144": "RENI SUSANTI",
+            "00155": "FARSA SEPTIA ADI NUGROHO",
+            "00225": "AMALIA PURWATININGRUM",
+            "00266": "NUR SISWADI",
+            "00287": "ANTON",
+            "00366": "MUSLIM PRIYATNA",
+            "00381": "M ASEP MAULANA YUSUF",
+            "00432": "MUHAMAD WAHYU RIDLO",
+            "00487": "M INDRA SAKTI JAYA",
+            "00931": "ANUGRAH RYAN AENDY",
+            "00970": "AFRIYANTI",
+            "00975": "DIANA NUR HAYATI",
+            "01028": "SAADAH",
+            "01329": "MUHAMMAD HILAL",
+            "01357": "ARRIZALDY TUFLIYADDO",
+            "01611": "ANNISA NURRAHMI SYABRINA P",
+            "01655": "M HADRI NOOR",
+            "01667": "RAMADHAN RUDOLF PARTOGI",
+            "01670": "DEVI HENDRIYANA",
+            "01688": "NABILA FEBRIANI PUTRI",
+            "01692": "RANI WAHYUNINGSIH",
+            "01756": "EVA HIDAYATURROHMAH",
+            "01765": "ANIS MUTIARA",
+            "01930": "NURULFIDA LIDINILLAH A",
+            "01933": "KUNIFAH NADIYAH",
+            "01936": "ANGGRAENI P B",
+            "02204": "DEWI LARASATI",
+            "00059": "AHMAD KHUAILID",
+            "00175": "ANIFAH PUTRI LESTARI",
+            "00212": "VICKY OKTRIVIANI",
+            "00247": "NOVITA SARI",
+            "00336": "EKA AYU WIDIASTUTI",
+            "00375": "MUHAMMAD RIDWAN",
+            "00395": "MUHAMMAD THUFEIL",
+            "00446": "BAYU PRASETYO",
+            "00649": "WIDIYANTO",
+            "00718": "FITRI MARETA",
+            "00823": "FARIZ HILMAN ADLY",
+            "00927": "HENDRIANA",
+            "00951": "SITI AMINAH",
+            "01006": "DWI PUSPITA SARI",
+            "01051": "CERY CHINTIA",
+            "01134": "FITHRIYYAH RIZQIKA",
+            "01140": "DWI DHINI OKTAVIANI",
+            "01157": "LINDA WENI",
+            "01201": "SAYYIDAH KHOERUNNISA",
+            "01267": "DENHAR GENTAYU P",
+            "01289": "ENENG ZULFA ISNAENI",
+            "01434": "ATOPANDRI",
+            "01452": "TIINI MUJAHIDAH ASHODIQ",
+            "01455": "YUSUP KOMARUDIN",
+            "01473": "AKMAL FIRMANSYAH",
+            "01500": "SHEILLA SAFITRI",
+            "01509": "MIFTAHUDIN",
+            "01660": "YONATAN NALLE",
+            "01829": "PUNGKY FAJAR ADI V",
+            "01932": "RUDI SATYA H",
+            "02106": "ASSIFA ATSNA HANIFA"
+        };
+
+            const nidEl = document.getElementById("nidInput");
+            const namaEl = document.getElementById("namaInput");
+
+            nidEl.addEventListener("input", function() {
+                const val = this.value.trim();
+                // Autofill jika NID cocok dengan database
+                if (dbPegawai[val]) {
+                    namaEl.value = dbPegawai[val];
+                } else {
+                    namaEl.value = "";
                 }
-            </script>
-        </body>
-        </html>
-    "></iframe>
+            });
+        </script>
+    </body>
+    </html>'></iframe>
+
+    <!-- TAB SURAT PERINTAH LEMBUR (SPL) -->
+    <iframe id="spl" srcdoc="<!DOCTYPE html><html><body style='font-family:sans-serif; padding:30px; color:#1a237e;'><h2>Halaman SPL</h2><p>Silakan input data lembur pada bagian ini.</p></body></html>"></iframe>
 </div>
 
 <script>
