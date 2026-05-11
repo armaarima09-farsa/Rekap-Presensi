@@ -467,6 +467,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    const nidInputSPL = document.getElementById('nidPegawaiSPL');
+    const namaInputSPL = document.getElementById('namaPegawaiSPL');
+
+    if (nidInputSPL && namaInputSPL) {
+        nidInputSPL.addEventListener('input', function() {
+            const nid = this.value.trim();
+
+            if (pegawaiData[nid]) {
+                namaInputSPL.value = pegawaiData[nid];
+            } else {
+                namaInputSPL.value = '';
+            }
+        });
+    }
+});
+    }
 });
 &lt;/script&gt;
 
