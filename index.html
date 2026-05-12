@@ -6,11 +6,22 @@
 <title>Sistem Presensi & SPL - Bintang Pelajar</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; overflow: hidden; }
-    .topbar { display: flex; gap: 10px; padding: 12px; background: #1a237e; box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 1000; position: relative; }
-    .tab-btn { padding: 10px 18px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; background: rgba(255,255,255,0.15); color: white; transition: 0.2s; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; overflow: hidden; }
+    
+    .topbar { 
+        display: flex; gap: 10px; padding: 12px; background: #1a237e; 
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 1000; position: relative; 
+    }
+    
+    .tab-btn { 
+        padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; 
+        font-weight: bold; background: rgba(255,255,255,0.15); color: white; transition: 0.3s; 
+    }
+    
     .tab-btn.active { background: #ffab00; color: #1a237e; }
+    
     .frame-container { width: 100vw; height: calc(100vh - 64px); position: relative; }
+    
     iframe { width: 100%; height: 100%; border: none; display: none; background: white; }
     iframe.active { display: block; }
 </style>
@@ -23,61 +34,43 @@
 </div>
 
 <div class="frame-container">
+    <!-- TAB REKAP PRESENSI -->
     <iframe id="presensi" class="active" srcdoc='
     <!DOCTYPE html>
-    <html>
+    <html lang="id">
     <head>
         <style>
-            body { font-family: sans-serif; padding: 20px; background: #f8f9fa; }
-            .container { max-width: 800px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
-            h2 { color: #1a237e; margin-bottom: 20px; text-align: center; border-bottom: 2px solid #ffab00; padding-bottom: 10px; }
-            .grid-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-            .form-group { display: flex; flex-direction: column; margin-bottom: 15px; }
-            .form-group.full { grid-column: span 2; }
-            label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #333; }
-            input, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-            input[readonly] { background: #eee; cursor: not-allowed; }
-            .btn-submit { grid-column: span 2; background: #1a237e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-            .btn-submit:hover { background: #283593; }
+            body { font-family: sans-serif; padding: 30px; background: #f8f9fa; }
+            .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            h2 { color: #1a237e; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ffab00; padding-bottom: 10px; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+            .field { display: flex; flex-direction: column; margin-bottom: 15px; }
+            .full { grid-column: span 2; }
+            label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #444; }
+            input, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
+            input[readonly] { background: #e9ecef; cursor: not-allowed; }
+            .btn { grid-column: span 2; background: #1a237e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
         </style>
     </head>
     <body>
         <div class="container">
-            <h2>REKAP PRESENSI PEGAWAI</h2>
-            <div class="grid-form">
-                <div class="form-group">
-                    <label>NID (NOMOR INDUK DIREKTORAT)</label>
-                    <input type="text" id="nid" placeholder="Contoh: 00155">
+            <h2>REKAP PRESENSI</h2>
+            <div class="grid">
+                <div class="field">
+                    <label>NID (NOMOR INDUK)</label>
+                    <input type="text" id="nid_p" placeholder="Masukkan NID...">
                 </div>
-                <div class="form-group">
+                <div class="field">
                     <label>NAMA PEGAWAI</label>
-                    <input type="text" id="nama" readonly placeholder="Otomatis terisi...">
+                    <input type="text" id="nama_p" readonly placeholder="Otomatis...">
                 </div>
-                <div class="form-group">
-                    <label>JUMLAH KP</label>
-                    <input type="number" id="kp" value="0">
-                </div>
-                <div class="form-group">
-                    <label>JUMLAH HK</label>
-                    <input type="number" id="hk" value="0">
-                </div>
-                <div class="form-group">
-                    <label>JUMLAH IJIN</label>
-                    <input type="number" id="ijin" value="0">
-                </div>
-                <div class="form-group">
-                    <label>JUMLAH SAKIT</label>
-                    <input type="number" id="sakit" value="0">
-                </div>
-                <div class="form-group">
-                    <label>JUMLAH ALFA</label>
-                    <input type="number" id="alfa" value="0">
-                </div>
-                <div class="form-group">
-                    <label>JUMLAH CUTI</label>
-                    <input type="number" id="cuti" value="0">
-                </div>
-                <button class="btn-submit">SIMPAN DATA PRESENSI</button>
+                <div class="field"><label>JUMLAH KP</label><input type="number" value="0"></div>
+                <div class="field"><label>JUMLAH HK</label><input type="number" value="0"></div>
+                <div class="field"><label>IJIN</label><input type="number" value="0"></div>
+                <div class="field"><label>SAKIT</label><input type="number" value="0"></div>
+                <div class="field"><label>ALFA</label><input type="number" value="0"></div>
+                <div class="field"><label>CUTI</label><input type="number" value="0"></div>
+                <button class="btn">SIMPAN PRESENSI</button>
             </div>
         </div>
         <script>
@@ -142,24 +135,133 @@
     "01932": "RUDI SATYA H",
     "02106": "ASSIFA ATSNA HANIFA"
 };
-            document.getElementById("nid").addEventListener("input", function() {
+            document.getElementById("nid_p").addEventListener("input", function() {
                 const val = this.value.trim();
-                document.getElementById("nama").value = db[val] || "";
+                document.getElementById("nama_p").value = db[val] || "";
             });
         </script>
     </body>
     </html>'></iframe>
 
-    <iframe id="spl" srcdoc="<!DOCTYPE html><html><body style='font-family:sans-serif; padding:30px; color:#1a237e;'><h2>Halaman SPL</h2><p>Fitur cari berdasarkan nama telah dihapus. Silakan gunakan NID.</p></body></html>"></iframe>
+    <!-- TAB SURAT PERINTAH LEMBUR (SPL) -->
+    <iframe id="spl" srcdoc='
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <style>
+            body { font-family: sans-serif; padding: 30px; background: #f8f9fa; }
+            .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            h2 { color: #1a237e; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ffab00; padding-bottom: 10px; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+            .field { display: flex; flex-direction: column; margin-bottom: 15px; }
+            label { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #444; }
+            input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
+            input[readonly] { background: #e9ecef; cursor: not-allowed; }
+            .btn { grid-column: span 2; background: #1a237e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>SURAT PERINTAH LEMBUR (SPL)</h2>
+            <div class="grid">
+                <div class="field">
+                    <label>NID PEGAWAI</label>
+                    <input type="text" id="nid_s" placeholder="Masukkan NID...">
+                </div>
+                <div class="field">
+                    <label>NAMA PEGAWAI</label>
+                    <input type="text" id="nama_s" readonly placeholder="Otomatis...">
+                </div>
+                <div class="field">
+                    <label>TANGGAL LEMBUR</label>
+                    <input type="date">
+                </div>
+                <div class="field">
+                    <label>DURASI (JAM)</label>
+                    <input type="number" placeholder="0">
+                </div>
+                <button class="btn">SIMPAN SPL</button>
+            </div>
+        </div>
+        <script>
+            const db = {
+    "00101": "SENO ARIEF BUDIMAN",
+    "00144": "RENI SUSANTI",
+    "00155": "FARSA SEPTIA ADI NUGROHO",
+    "00225": "AMALIA PURWATININGRUM",
+    "00266": "NUR SISWADI",
+    "00287": "ANTON",
+    "00366": "MUSLIM PRIYATNA",
+    "00381": "M ASEP MAULANA YUSUF",
+    "00432": "MUHAMAD WAHYU RIDLO",
+    "00487": "M INDRA SAKTI JAYA",
+    "00931": "ANUGRAH RYAN AENDY",
+    "00970": "AFRIYANTI",
+    "00975": "DIANA NUR HAYATI",
+    "01028": "SAADAH",
+    "01329": "MUHAMMAD HILAL",
+    "01357": "ARRIZALDY TUFLIYADDO",
+    "01611": "ANNISA NURRAHMI SYABRINA P",
+    "01655": "M HADRI NOOR",
+    "01667": "RAMADHAN RUDOLF PARTOGI",
+    "01670": "DEVI HENDRIYANA",
+    "01688": "NABILA FEBRIANI PUTRI",
+    "01692": "RANI WAHYUNINGSIH",
+    "01756": "EVA HIDAYATURROHMAH",
+    "01765": "ANIS MUTIARA",
+    "01930": "NURULFIDA LIDINILLAH A",
+    "01933": "KUNIFAH NADIYAH",
+    "01936": "ANGGRAENI P B",
+    "02204": "DEWI LARASATI",
+    "00059": "AHMAD KHUAILID",
+    "00175": "ANIFAH PUTRI LESTARI",
+    "00212": "VICKY OKTRIVIANI",
+    "00247": "NOVITA SARI",
+    "00336": "EKA AYU WIDIASTUTI",
+    "00375": "MUHAMMAD RIDWAN",
+    "00395": "MUHAMMAD THUFEIL",
+    "00446": "BAYU PRASETYO",
+    "00649": "WIDIYANTO",
+    "00718": "FITRI MARETA",
+    "00823": "FARIZ HILMAN ADLY",
+    "00927": "HENDRIANA",
+    "00951": "SITI AMINAH",
+    "01006": "DWI PUSPITA SARI",
+    "01051": "CERY CHINTIA",
+    "01134": "FITHRIYYAH RIZQIKA",
+    "01140": "DWI DHINI OKTAVIANI",
+    "01157": "LINDA WENI",
+    "01201": "SAYYIDAH KHOERUNNISA",
+    "01267": "DENHAR GENTAYU P",
+    "01289": "ENENG ZULFA ISNAENI",
+    "01434": "ATOPANDRI",
+    "01452": "TIINI MUJAHIDAH ASHODIQ",
+    "01455": "YUSUP KOMARUDIN",
+    "01473": "AKMAL FIRMANSYAH",
+    "01500": "SHEILLA SAFITRI",
+    "01509": "MIFTAHUDIN",
+    "01660": "YONATAN NALLE",
+    "01829": "PUNGKY FAJAR ADI V",
+    "01932": "RUDI SATYA H",
+    "02106": "ASSIFA ATSNA HANIFA"
+};
+            document.getElementById("nid_s").addEventListener("input", function() {
+                const val = this.value.trim();
+                document.getElementById("nama_s").value = db[val] || "";
+            });
+        </script>
+    </body>
+    </html>'></iframe>
 </div>
 
 <script>
     function showTab(tabId, btn) {
-        document.querySelectorAll('iframe').forEach(f => f.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
+        document.querySelectorAll("iframe").forEach(f => f.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.getElementById(tabId).classList.add("active");
+        btn.classList.add("active");
     }
 </script>
+
 </body>
 </html>
